@@ -9,8 +9,8 @@ test('twelve-day itinerary, locally saved notes and offline emergency reload',as
  await page.reload();
  await expect(page.getByLabel('Notes for this day')).toHaveValue('Bring extra sunhats');
  await expect.poll(()=>page.evaluate(async()=>{if(!('serviceWorker' in navigator))return false;await navigator.serviceWorker.ready;return Boolean(navigator.serviceWorker.controller)}),{timeout:20000}).toBeTruthy();
- await expect.poll(()=>page.evaluate(async()=>Boolean(await caches.match('/guides/Cape_Town_Family_Printable_Field_Guide_2026_12_Days.pdf'))),{timeout:20000}).toBeTruthy();
  await context.setOffline(true);
+ await expect.poll(()=>page.evaluate(async()=>{try{const r=await fetch('/guides/Cape_Town_Family_Printable_Field_Guide_2026_12_Days.pdf');return r.ok&&(await r.arrayBuffer()).byteLength>1000}catch{return false}}),{timeout:20000}).toBeTruthy();
  await page.goto('/emergency');
  await expect(page.getByRole('heading',{name:/Help, without a hunt/i})).toBeVisible();
  await expect(page.getByRole('link',{name:/CALL 112/i})).toHaveAttribute('href','tel:112');

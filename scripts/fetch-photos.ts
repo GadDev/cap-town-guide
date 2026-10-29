@@ -15,11 +15,21 @@ const photographs=[
  {name:'bokap',id:'Zoc0u6M_73g',credit:'Joshua Kettle',place:'Bo-Kaap'},
  {name:'vineyard',id:'25EEyoY58zI',credit:'Matthieu Joannon',place:'Tokara vineyards (NOT Spier)'}
 ];
+const CDN:Record<string,string>={
+ table:'photo-1495652632700-92f066711b21',
+ noordhoek:'photo-1537045864092-892b7de76421',
+ penguins:'photo-1496497243327-9dccd845c35f',
+ chapmans:'photo-1580933884561-245548c0396c',
+ kirstenbosch:'photo-1663407185468-d5f67a9caaab',
+ cape:'photo-1685021404498-20eb4a65c4c0',
+ bokap:'photo-1663414227598-9d778b49d417',
+ vineyard:'photo-1503427128716-12b0ed4822bb'
+};
 const out=join(process.cwd(),'public','images');mkdirSync(out,{recursive:true});
 async function one(p:typeof photographs[number]) {
  const dest=join(out,p.name+'.webp');
  if(existsSync(dest)){console.log('Already exists:',p.name);return}
- const url='https://unsplash.com/photos/'+encodeURIComponent(p.id)+'/download?force=true&w=1200';
+ const url='https://images.unsplash.com/'+CDN[p.name]+'?auto=format&fit=crop&w=1200&q=76';
  try{
   const response=await fetch(url,{signal:AbortSignal.timeout(14000),headers:{'User-Agent':'CapeTownExplorer/1.0 (personal travel guide)'}});
   if(!response.ok)throw new Error('HTTP '+response.status);
