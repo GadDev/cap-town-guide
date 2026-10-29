@@ -1,0 +1,14 @@
+.culture-crosslinks {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.culture-crosslinks a {
+  padding: 11px 14px;
+  background: #e7ede4;
+  color: #285c4e;
+  border-radius: 5px;
+  font-weight: 800;
+  font-size: 0.8rem;
+}

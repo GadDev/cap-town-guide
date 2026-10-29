@@ -51,8 +51,12 @@ import {
   type Day,
   type Place,
 } from './data';
+import { EXTRA_PLACES } from './expanded-guide';
+import { MuseumsGuide, FamilyGuide, RobbenGuide } from './CultureGuide';
+import { HazardPhotos, WildlifeLegend } from './WildlifePhotos';
 import { CurrencyConverter } from './CurrencyConverter';
 import { ORIGINAL_GUIDES } from './guides';
+import { InteractiveMap } from './InteractiveMap';
 import './styles.css';
 
 function stored<T>(key: string, initial: T): T {
@@ -172,6 +176,7 @@ function useTripState(): State {
     swReady,
   };
 }
+const ALL_PLACES: Place[] = [...PLACES, ...EXTRA_PLACES];
 const primaryNav = [
   { to: '/', label: 'Home', icon: Home },
   { to: '/itinerary', label: '12 Days', icon: CalendarDays },
@@ -211,6 +216,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             ))}
             <NavLink to="/practical">Practical</NavLink>
             <NavLink to="/downloads">Guides</NavLink>
+            <NavLink to="/culture">Culture</NavLink>
           </nav>
           <Link className="emergency-top" to="/emergency">
             <Phone size={15} /> Emergency
@@ -238,7 +244,8 @@ function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div>
             <Link to="/emergency">Emergency</Link> · <Link to="/practical">Practical</Link> ·{' '}
-            <Link to="/downloads">PDF guides</Link>
+            <Link to="/downloads">PDF guides</Link> · <Link to="/culture">Culture</Link> ·{' '}
+            <Link to="/family">Family</Link> · <Link to="/robben-island">Robben Island</Link>
             <p>Research snapshot: 28 October 2026 · No bookings made.</p>
           </div>
         </div>
@@ -650,7 +657,7 @@ function ExplorePage() {
   const types = ['All', 'Nature', 'Family', 'Culture', 'Food', 'Wine', 'Services', 'Saved'];
   const items = useMemo(
     () =>
-      PLACES.filter(
+      ALL_PLACES.filter(
         (p) =>
           (filter === 'All' ||
             (filter === 'Saved' ? s.favorites.includes(p.id) : p.category === filter)) &&
@@ -772,66 +779,14 @@ function PlaceCard({ p }: { p: Place }) {
   );
 }
 function MapPage() {
-  const [selected, setSelected] = useState('All');
-  const types = ['All', 'Nature', 'Culture', 'Food', 'Wine', 'Family', 'Services'];
-  const items = PLACES.filter((p) => selected === 'All' || p.category === selected);
   return (
     <>
       <PageTitle
-        kicker="ORIENTATION & ROUTES"
-        title="Know where you are."
-        sub="A saved peninsula locator, plus readable addresses for every recommendation. Live directions require an internet connection."
+        kicker="OPEN SOURCE · MAPS"
+        title="Explore the Cape on the map."
+        sub="Interactive OpenStreetMap tiles while connected; local vector coastlines and approximate place markers in airplane mode. A locator, not turn-by-turn navigation."
       />
-      <section className="container section map-layout">
-        <div className="map-graphic">
-          <img
-            src="/maps/peninsula.svg"
-            alt="Simplified map of Cape Peninsula showing Cape Town, Noordhoek, Boulders and Cape Point"
-          />
-          <p>
-            <MapPin size={16} /> Simplified geographic orientation; not a driving or walking
-            navigation map.
-          </p>
-        </div>
-        <div className="map-places">
-          <h2>Places on your route</h2>
-          <div className="filters">
-            {types.map((t) => (
-              <button className={selected === t ? 'on' : ''} key={t} onClick={() => setSelected(t)}>
-                {t}
-              </button>
-            ))}
-          </div>
-          <div className="map-place-scroll">
-            {items.map((p) => (
-              <div className="map-place" key={p.id}>
-                <span>{p.symbol || '📍'}</span>
-                <div>
-                  <strong>{p.name}</strong>
-                  <small>
-                    {p.address} · {p.minutes}
-                  </small>
-                </div>
-                <a
-                  title={'Online directions to ' + p.name}
-                  href={mapLink(p.address)}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <ExternalLink size={17} />
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      <section className="container prose-note">
-        <WifiOff size={20} />
-        <p>
-          Offline mode shows this local reference and saved addresses. Google Maps opens externally
-          when connectivity returns. No offline turn-by-turn routing is provided.
-        </p>
-      </section>
+      <InteractiveMap places={ALL_PLACES} />
     </>
   );
 }
@@ -856,6 +811,7 @@ function SafetyPage() {
             </p>
           </div>
         </div>
+        <WildlifeLegend />
         <div className="filters" role="group" aria-label="Filter hazards">
           {groups.map((t) => (
             <button key={t} className={group === t ? 'on' : ''} onClick={() => setGroup(t)}>
@@ -897,13 +853,14 @@ function SafetyPage() {
               </div>
               <h3>{h.name}</h3>
               {h.latin && <i>{h.latin}</i>}
+              <HazardPhotos hazard={h.name} />
               <p>{h.recognition}</p>
               <h4>How to avoid trouble</h4>
               <p>{h.prevention}</p>
               <h4>What to do</h4>
               <p>{h.response}</p>
               <small>
-                Reference: {h.source} · image-free text guide, not an identification tool
+                Reference: {h.source} · photographs are references, not an identification tool
               </small>
             </article>
           ))}
@@ -1176,6 +1133,9 @@ function App() {
             <Route path="/itinerary" element={<ItineraryPage />} />
             <Route path="/day/:id" element={<DayPage />} />
             <Route path="/explore" element={<ExplorePage />} />
+            <Route path="/culture" element={<MuseumsGuide />} />
+            <Route path="/family" element={<FamilyGuide />} />
+            <Route path="/robben-island" element={<RobbenGuide />} />
             <Route path="/map" element={<MapPage />} />
             <Route path="/safety" element={<SafetyPage />} />
             <Route path="/emergency" element={<EmergencyPage />} />
