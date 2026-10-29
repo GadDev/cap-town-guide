@@ -707,33 +707,46 @@ function ExplorePage() {
     </>
   );
 }
+const PLACE_PHOTOS: Record<string, { src: string; alt: string }> = {
+  monkey: { src: '/images/noordhoek.webp', alt: 'Noordhoek Beach and coastal scenery' },
+  boulders: { src: '/images/penguins.webp', alt: 'African penguins at Boulders Beach' },
+  kirstenbosch: { src: '/images/kirstenbosch.webp', alt: 'Kirstenbosch Botanical Garden' },
+  cable: { src: '/images/table.webp', alt: 'Table Mountain above Cape Town' },
+  capepoint: { src: '/images/cape.webp', alt: 'The Cape Point coastline' },
+  bokap: { src: '/images/bokap.webp', alt: 'Colourful houses in Bo-Kaap' },
+};
+
 function PlaceCard({ p }: { p: Place }) {
   const s = travel(),
     saved = s.favorites.includes(p.id);
+  const [photoFailed, setPhotoFailed] = useState(false);
+  const photo = PLACE_PHOTOS[p.id];
+  const variant =
+    p.category === 'Wine'
+      ? 'vineyard'
+      : p.category === 'Culture'
+        ? 'city'
+        : p.category === 'Nature'
+          ? 'mountain'
+          : 'ocean';
+  const showPhoto = Boolean(photo && !photoFailed);
   return (
     <article className="place-card">
-      <div
-        className={
-          'place-visual art-' +
-          (p.category === 'Wine'
-            ? 'vineyard'
-            : p.category === 'Culture'
-              ? 'city'
-              : p.category === 'Nature'
-                ? 'mountain'
-                : 'ocean')
-        }
-        style={photoStyle(
-          p.category === 'Wine'
-            ? 'vineyard'
-            : p.category === 'Culture'
-              ? 'city'
-              : p.category === 'Nature'
-                ? 'mountain'
-                : 'ocean',
+      <div className={'place-visual art-' + variant + (showPhoto ? ' has-photo' : '')}>
+        {showPhoto ? (
+          <img
+            className="place-photo"
+            src={photo.src}
+            alt={photo.alt}
+            loading="lazy"
+            decoding="async"
+            onError={() => setPhotoFailed(true)}
+          />
+        ) : (
+          <span className="place-symbol" aria-hidden="true">
+            {p.symbol || '✦'}
+          </span>
         )}
-      >
-        <span>{p.symbol || '✦'}</span>
         <button
           onClick={() => s.toggleFavorite(p.id)}
           aria-pressed={saved}
