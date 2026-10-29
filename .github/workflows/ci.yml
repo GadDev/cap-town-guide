@@ -15,10 +15,6 @@ jobs:
           node-version: 22
       - run: npm install --no-audit --no-fund
       - run: npm run lint
-      - name: Inspect Oxfmt corrections (temporary)
-        run: |
-          ./node_modules/.bin/oxfmt src/currency.ts e2e/currency.spec.ts
-          git diff -- src/currency.ts e2e/currency.spec.ts
       - name: Check formatting of changed source files
         if: github.event_name == 'pull_request'
         run: |
