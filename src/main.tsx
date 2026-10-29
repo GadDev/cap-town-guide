@@ -51,6 +51,8 @@ import {
   type Day,
   type Place,
 } from './data';
+import { EXTRA_PLACES } from './expanded-guide';
+import { MuseumsGuide, FamilyGuide, RobbenGuide } from './CultureGuide';
 import { CurrencyConverter } from './CurrencyConverter';
 import './styles.css';
 
@@ -171,6 +173,7 @@ function useTripState(): State {
     swReady,
   };
 }
+const ALL_PLACES: Place[] = [...PLACES, ...EXTRA_PLACES];
 const primaryNav = [
   { to: '/', label: 'Home', icon: Home },
   { to: '/itinerary', label: '12 Days', icon: CalendarDays },
@@ -210,6 +213,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             ))}
             <NavLink to="/practical">Practical</NavLink>
             <NavLink to="/downloads">Guides</NavLink>
+            <NavLink to="/culture">Culture</NavLink>
           </nav>
           <Link className="emergency-top" to="/emergency">
             <Phone size={15} /> Emergency
@@ -237,7 +241,8 @@ function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div>
             <Link to="/emergency">Emergency</Link> · <Link to="/practical">Practical</Link> ·{' '}
-            <Link to="/downloads">PDF guides</Link>
+            <Link to="/downloads">PDF guides</Link> · <Link to="/culture">Culture</Link> ·{' '}
+            <Link to="/family">Family</Link> · <Link to="/robben-island">Robben Island</Link>
             <p>Research snapshot: 28 October 2026 · No bookings made.</p>
           </div>
         </div>
@@ -649,7 +654,7 @@ function ExplorePage() {
   const types = ['All', 'Nature', 'Family', 'Culture', 'Food', 'Wine', 'Services', 'Saved'];
   const items = useMemo(
     () =>
-      PLACES.filter(
+      ALL_PLACES.filter(
         (p) =>
           (filter === 'All' ||
             (filter === 'Saved' ? s.favorites.includes(p.id) : p.category === filter)) &&
@@ -773,7 +778,7 @@ function PlaceCard({ p }: { p: Place }) {
 function MapPage() {
   const [selected, setSelected] = useState('All');
   const types = ['All', 'Nature', 'Culture', 'Food', 'Wine', 'Family', 'Services'];
-  const items = PLACES.filter((p) => selected === 'All' || p.category === selected);
+  const items = ALL_PLACES.filter((p) => selected === 'All' || p.category === selected);
   return (
     <>
       <PageTitle
@@ -1181,6 +1186,9 @@ function App() {
             <Route path="/itinerary" element={<ItineraryPage />} />
             <Route path="/day/:id" element={<DayPage />} />
             <Route path="/explore" element={<ExplorePage />} />
+            <Route path="/culture" element={<MuseumsGuide />} />
+            <Route path="/family" element={<FamilyGuide />} />
+            <Route path="/robben-island" element={<RobbenGuide />} />
             <Route path="/map" element={<MapPage />} />
             <Route path="/safety" element={<SafetyPage />} />
             <Route path="/emergency" element={<EmergencyPage />} />
