@@ -1,0 +1,30 @@
+name: Format museums feature branch
+on:
+  push:
+    branches: ['feat/museums-history-robben-family-options']
+permissions:
+  contents: write
+jobs:
+  format-feature:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/museums-history-robben-family-options
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - name: Format changed source with OXFMT
+        run: npx oxfmt src/main.tsx src/styles.css src/museum-data.ts src/CulturePages.tsx src/culture.css tests/museums.test.ts e2e/museums.spec.ts
+      - name: Commit formatting on branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/main.tsx src/styles.css src/museum-data.ts src/CulturePages.tsx src/culture.css tests/museums.test.ts e2e/museums.spec.ts
+          if ! git diff --cached --quiet; then
+            git commit -m "style: apply OXFMT to museum feature sources"
+            git push origin HEAD:refs/heads/feat/museums-history-robben-family-options
+          fi
