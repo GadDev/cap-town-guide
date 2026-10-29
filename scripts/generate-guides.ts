@@ -1,5 +1,5 @@
 import PDFDocument from 'pdfkit';
-import {mkdirSync,createWriteStream} from 'node:fs';
+import {mkdirSync,createWriteStream,existsSync} from 'node:fs';
 import {join} from 'node:path';
 import {DAYS, EMERGENCY, HAZARDS, PLACES, PACKING, TRIP} from '../src/data.ts';
 
@@ -27,6 +27,8 @@ function cover(doc:PDFKit.PDFDocument,subtitle:string,print:boolean){
  doc.save().fillColor(print?'#88A793':'#668E86');
  doc.moveTo(0,530).lineTo(88,402).lineTo(172,485).lineTo(276,272).lineTo(405,451).lineTo(514,344).lineTo(W,460).lineTo(W,H).lineTo(0,H).fill();
  doc.fillColor(print?'#4E7866':'#284D4B').moveTo(0,650).lineTo(95,570).lineTo(232,637).lineTo(382,479).lineTo(W,635).lineTo(W,H).lineTo(0,H).fill();doc.restore();
+ const coverPhoto=join(process.cwd(),'public','images','table.jpg');
+ if(!print && existsSync(coverPhoto)){doc.image(coverPhoto,24,455,{fit:[W-48,292],align:'center',valign:'center'});}
  doc.fillColor(print?green:gold).font('Helvetica-Bold').fontSize(10).text('A FAMILY JOURNEY  /  30 OCT – 10 NOV 2026',46,55,{characterSpacing:2});
  doc.fillColor(print?green:cream).font('Times-Roman').fontSize(63).text('CAPE\nTOWN',42,155,{lineGap:0});
  doc.font('Times-Italic').fontSize(25).text('12 Days at the Edge of Africa',46,334,{width:440});
