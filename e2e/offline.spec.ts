@@ -46,6 +46,23 @@ test('twelve-day itinerary, locally saved notes and offline emergency reload', a
   }
   await page.goto('/downloads');
   await expect(page.getByRole('link', { name: /Download PDF/i })).toHaveCount(2);
+  for (const guide of [
+    {
+      name: 'Cape Town Family Travel Magazine',
+      file: '/guides/Cape_Town_Family_Travel_Magazine_2026.pdf',
+    },
+    {
+      name: 'Family Printable Field Guide',
+      file: '/guides/Cape_Town_Family_Printable_Field_Guide_2026.pdf',
+    },
+  ]) {
+    const card = page.locator('.pdf-card').filter({
+      has: page.getByRole('heading', { name: guide.name }),
+    });
+    await expect(card.getByRole('link', { name: 'Download PDF' })).toHaveAttribute('href', guide.file);
+    await expect(card.getByRole('link', { name: 'Download PDF' })).toHaveAttribute('download', '');
+    await expect(card.getByRole('link', { name: 'Open' })).toHaveAttribute('href', guide.file);
+  }
   await page.goto('/emergency');
   await expect(page.getByRole('heading', { name: /Help, without a hunt/i })).toBeVisible();
   await expect(page.getByRole('link', { name: /CALL 112/i })).toHaveAttribute('href', 'tel:112');
