@@ -51,3 +51,16 @@ Changes to notes, day order and favourites are stored on the current browser/dev
 The two preserved guides are a research snapshot dated 28 October 2026. Public admission figures and drive times are not live quotes; check operating hours, weather and bookings. Images are regional/editorial references, not proof of current venue conditions; avoid treating wildlife photos as a basis for medical identification.
 
 `npm run check` validates TypeScript, `npm test` checks content, and `npm run build` verifies the original PDF bytes then builds the site. GitHub CI also runs Playwright offline checks and uploads the **existing files** from `dist/guides/` as artifacts; it does not generate PDFs.
+
+## Linting and formatting
+
+The project uses **Oxlint** for fast JavaScript/TypeScript/React linting and **Oxfmt** for consistent formatting.
+
+```bash
+npm run lint            # report lint diagnostics
+npm run lint:fix        # apply available safe lint fixes
+npm run format          # format supported tracked source/config/document files in place
+npm run format:check    # verify repository-wide formatting without writing files
+```
+
+Both tools are installed as dev dependencies via `npm install`; no global binaries are needed. CI lints the repository and checks Oxfmt **only on source files changed by each PR** (JS, TS, JSX, TSX, CSS), allowing existing compact formatting to be migrated gradually without an unrelated whole-repository reformat. Full `npm run format:check` may report pre-existing files until they are formatted. Generated files, public assets, and build outputs are excluded.

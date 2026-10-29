@@ -9,11 +9,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund
       - run: npm run guides:verify
+      - run: npm run lint
+      - name: Check formatting of changed source files
+        if: github.event_name == 'pull_request'
+        run: |
+          git diff --name-only -z --diff-filter=ACMR "${{ github.event.pull_request.base.sha }}" HEAD -- '*.js' '*.jsx' '*.mjs' '*.cjs' '*.ts' '*.tsx' '*.css' \
+            | xargs -0 -r ./node_modules/.bin/oxfmt --check
       - run: npm run check
       - run: npm test
       - run: npm run build
