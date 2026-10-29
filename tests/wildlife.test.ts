@@ -1,0 +1,18 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { HAZARDS } from '../src/data.ts';
+import { WILDLIFE_PHOTOS, WILDLIFE_GROUPS } from '../src/wildlifePhotos.ts';
+test('every animal hazard has at least one representative species image', () => {
+  for (const h of HAZARDS.filter((x) =>
+    ['Snakes', 'Spiders', 'Scorpions', 'Mammals', 'Marine life'].includes(x.group),
+  )) {
+    assert.ok(WILDLIFE_GROUPS[h.name]?.length > 0, h.name + ' missing reference photo');
+  }
+});
+test('twelve distinct credited animal images with Wikimedia sources', () => {
+  assert.equal(WILDLIFE_PHOTOS.length, 12);
+  assert.equal(new Set(WILDLIFE_PHOTOS.map((x) => x.id)).size, 12);
+  for (const x of WILDLIFE_PHOTOS) {
+    assert.ok(x.author && x.license && x.filename.includes('.'));
+  }
+});

@@ -598,7 +598,7 @@ p {
   overflow: hidden;
 }
 .day-thumb:before,
-.place-visual:before {
+.place-visual:not(.has-photo):before {
   content: '';
   position: absolute;
   width: 120%;
@@ -1036,15 +1036,29 @@ p {
   flex-direction: column;
 }
 .place-visual {
-  height: 185px;
   position: relative;
   display: grid;
   place-items: center;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  flex: 0 0 auto;
+  overflow: hidden;
+  background-color: #d9e4dc;
 }
-.place-visual > span {
+.place-photo {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+}
+.place-visual > .place-symbol {
   position: relative;
   z-index: 1;
-  font-size: 4.6rem;
+  font-size: clamp(2.8rem, 5vw, 4.6rem);
   filter: drop-shadow(0 10px 14px #20332950);
 }
 .place-visual > button {
@@ -1835,6 +1849,7 @@ p {
   font-weight: 700;
   font-size: 0.83rem;
 }
+
 .explore-guide-nav {
   display: grid;
   grid-template-columns: 1fr 1fr;

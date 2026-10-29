@@ -51,9 +51,14 @@ import {
   type Day,
   type Place,
 } from './data';
-import { CurrencyConverter } from './CurrencyConverter';
+import { EXTRA_PLACES } from './expanded-guide';
+import { MuseumsGuide, FamilyGuide, RobbenGuide } from './CultureGuide';
 import { CulturePage, VenuePage, FamilyIdeasPage, RobbenIslandPage } from './CulturePages';
-import { EXTRA_PLACES } from './museum-data';
+import { EXTRA_PLACES as MUSEUM_PLACES } from './museum-data';
+import { HazardPhotos, WildlifeLegend } from './WildlifePhotos';
+import { CurrencyConverter } from './CurrencyConverter';
+import { ORIGINAL_GUIDES } from './guides';
+import { InteractiveMap } from './InteractiveMap';
 import './styles.css';
 
 function stored<T>(key: string, initial: T): T {
@@ -173,6 +178,9 @@ function useTripState(): State {
     swReady,
   };
 }
+const ALL_PLACES: Place[] = [...PLACES, ...EXTRA_PLACES, ...MUSEUM_PLACES].filter(
+  (place, index, places) => places.findIndex((candidate) => candidate.id === place.id) === index,
+);
 const primaryNav = [
   { to: '/', label: 'Home', icon: Home },
   { to: '/itinerary', label: '12 Days', icon: CalendarDays },
@@ -210,9 +218,9 @@ function Layout({ children }: { children: React.ReactNode }) {
                 {label}
               </NavLink>
             ))}
-            <NavLink to="/culture">Culture</NavLink>
             <NavLink to="/practical">Practical</NavLink>
             <NavLink to="/downloads">Guides</NavLink>
+            <NavLink to="/culture">Culture</NavLink>
           </nav>
           <Link className="emergency-top" to="/emergency">
             <Phone size={15} /> Emergency
@@ -240,7 +248,8 @@ function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div>
             <Link to="/emergency">Emergency</Link> · <Link to="/practical">Practical</Link> ·{' '}
-            <Link to="/downloads">PDF guides</Link>
+            <Link to="/downloads">PDF guides</Link> · <Link to="/culture">Culture</Link> ·{' '}
+            <Link to="/family">Family</Link> · <Link to="/robben-island">Robben Island</Link>
             <p>Research snapshot: 28 October 2026 · No bookings made.</p>
           </div>
         </div>
@@ -681,7 +690,7 @@ function ExplorePage() {
   const types = ['All', 'Nature', 'Family', 'Culture', 'Food', 'Wine', 'Services', 'Saved'];
   const items = useMemo(
     () =>
-      [...PLACES, ...EXTRA_PLACES].filter(
+      ALL_PLACES.filter(
         (p) =>
           (filter === 'All' ||
             (filter === 'Saved' ? s.favorites.includes(p.id) : p.category === filter)) &&
@@ -750,33 +759,46 @@ function ExplorePage() {
     </>
   );
 }
+const PLACE_PHOTOS: Record<string, { src: string; alt: string }> = {
+  monkey: { src: '/images/noordhoek.webp', alt: 'Noordhoek Beach and coastal scenery' },
+  boulders: { src: '/images/penguins.webp', alt: 'African penguins at Boulders Beach' },
+  kirstenbosch: { src: '/images/kirstenbosch.webp', alt: 'Kirstenbosch Botanical Garden' },
+  cable: { src: '/images/table.webp', alt: 'Table Mountain above Cape Town' },
+  capepoint: { src: '/images/cape.webp', alt: 'The Cape Point coastline' },
+  bokap: { src: '/images/bokap.webp', alt: 'Colourful houses in Bo-Kaap' },
+};
+
 function PlaceCard({ p }: { p: Place }) {
   const s = travel(),
     saved = s.favorites.includes(p.id);
+  const [photoFailed, setPhotoFailed] = useState(false);
+  const photo = PLACE_PHOTOS[p.id];
+  const variant =
+    p.category === 'Wine'
+      ? 'vineyard'
+      : p.category === 'Culture'
+        ? 'city'
+        : p.category === 'Nature'
+          ? 'mountain'
+          : 'ocean';
+  const showPhoto = Boolean(photo && !photoFailed);
   return (
     <article className="place-card">
-      <div
-        className={
-          'place-visual art-' +
-          (p.category === 'Wine'
-            ? 'vineyard'
-            : p.category === 'Culture'
-              ? 'city'
-              : p.category === 'Nature'
-                ? 'mountain'
-                : 'ocean')
-        }
-        style={photoStyle(
-          p.category === 'Wine'
-            ? 'vineyard'
-            : p.category === 'Culture'
-              ? 'city'
-              : p.category === 'Nature'
-                ? 'mountain'
-                : 'ocean',
+      <div className={'place-visual art-' + variant + (showPhoto ? ' has-photo' : '')}>
+        {showPhoto ? (
+          <img
+            className="place-photo"
+            src={photo.src}
+            alt={photo.alt}
+            loading="lazy"
+            decoding="async"
+            onError={() => setPhotoFailed(true)}
+          />
+        ) : (
+          <span className="place-symbol" aria-hidden="true">
+            {p.symbol || '✦'}
+          </span>
         )}
-      >
-        <span>{p.symbol || '✦'}</span>
         <button
           onClick={() => s.toggleFavorite(p.id)}
           aria-pressed={saved}
@@ -821,66 +843,14 @@ function PlaceCard({ p }: { p: Place }) {
   );
 }
 function MapPage() {
-  const [selected, setSelected] = useState('All');
-  const types = ['All', 'Nature', 'Culture', 'Food', 'Wine', 'Family', 'Services'];
-  const items = PLACES.filter((p) => selected === 'All' || p.category === selected);
   return (
     <>
       <PageTitle
-        kicker="ORIENTATION & ROUTES"
-        title="Know where you are."
-        sub="A saved peninsula locator, plus readable addresses for every recommendation. Live directions require an internet connection."
+        kicker="OPEN SOURCE · MAPS"
+        title="Explore the Cape on the map."
+        sub="Interactive OpenStreetMap tiles while connected; local vector coastlines and approximate place markers in airplane mode. A locator, not turn-by-turn navigation."
       />
-      <section className="container section map-layout">
-        <div className="map-graphic">
-          <img
-            src="/maps/peninsula.svg"
-            alt="Simplified map of Cape Peninsula showing Cape Town, Noordhoek, Boulders and Cape Point"
-          />
-          <p>
-            <MapPin size={16} /> Simplified geographic orientation; not a driving or walking
-            navigation map.
-          </p>
-        </div>
-        <div className="map-places">
-          <h2>Places on your route</h2>
-          <div className="filters">
-            {types.map((t) => (
-              <button className={selected === t ? 'on' : ''} key={t} onClick={() => setSelected(t)}>
-                {t}
-              </button>
-            ))}
-          </div>
-          <div className="map-place-scroll">
-            {items.map((p) => (
-              <div className="map-place" key={p.id}>
-                <span>{p.symbol || '📍'}</span>
-                <div>
-                  <strong>{p.name}</strong>
-                  <small>
-                    {p.address} · {p.minutes}
-                  </small>
-                </div>
-                <a
-                  title={'Online directions to ' + p.name}
-                  href={mapLink(p.address)}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <ExternalLink size={17} />
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      <section className="container prose-note">
-        <WifiOff size={20} />
-        <p>
-          Offline mode shows this local reference and saved addresses. Google Maps opens externally
-          when connectivity returns. No offline turn-by-turn routing is provided.
-        </p>
-      </section>
+      <InteractiveMap places={ALL_PLACES} />
     </>
   );
 }
@@ -905,6 +875,7 @@ function SafetyPage() {
             </p>
           </div>
         </div>
+        <WildlifeLegend />
         <div className="filters" role="group" aria-label="Filter hazards">
           {groups.map((t) => (
             <button key={t} className={group === t ? 'on' : ''} onClick={() => setGroup(t)}>
@@ -946,13 +917,14 @@ function SafetyPage() {
               </div>
               <h3>{h.name}</h3>
               {h.latin && <i>{h.latin}</i>}
+              <HazardPhotos hazard={h.name} />
               <p>{h.recognition}</p>
               <h4>How to avoid trouble</h4>
               <p>{h.prevention}</p>
               <h4>What to do</h4>
               <p>{h.response}</p>
               <small>
-                Reference: {h.source} · image-free text guide, not an identification tool
+                Reference: {h.source} · photographs are references, not an identification tool
               </small>
             </article>
           ))}
@@ -1101,21 +1073,7 @@ function PracticalPage() {
     </>
   );
 }
-const DOCS = [
-  {
-    name: 'Cape Town Family Travel Magazine',
-    pages: '12-day editorial edition',
-    file: '/guides/Cape_Town_Family_Travel_Magazine_2026_12_Days.pdf',
-    description: 'The visual journey: landscape, history, food and the daily stories.',
-  },
-  {
-    name: 'Family Printable Field Guide',
-    pages: '12-day practical edition',
-    file: '/guides/Cape_Town_Family_Printable_Field_Guide_2026_12_Days.pdf',
-    description:
-      'A4-friendly quick reference: each day, safety, emergency contacts and checklists.',
-  },
-];
+const DOCS = ORIGINAL_GUIDES;
 function DownloadsPage() {
   const s = travel();
   const [cached, setCached] = useState<Record<string, boolean>>({});
@@ -1145,7 +1103,7 @@ function DownloadsPage() {
       <PageTitle
         kicker="YOUR DIGITAL LIBRARY"
         title="Two guides, one Cape."
-        sub="Download the 12-day editions before setting off. Both PDFs are also precached by the installed application when storage allows."
+        sub="Download the original 10-day, 2026 editions. Save them to Files before travelling; the installed app also caches them for offline reading when storage allows."
       />
       <section className="container section">
         <div className="download-grid">
@@ -1154,11 +1112,13 @@ function DownloadsPage() {
               <div className={'pdf-cover ' + (i === 0 ? 'magazine' : 'print-cover')}>
                 <Eyebrow>CAPE TOWN · 2026</Eyebrow>
                 <h2>{i === 0 ? 'A family journey' : 'The field guide'}</h2>
-                <span>12 DAYS AT THE EDGE OF AFRICA</span>
+                <span>10 DAYS AT THE EDGE OF AFRICA</span>
                 <div className="pdf-mountain" />
               </div>
               <div>
-                <Eyebrow>{doc.pages}</Eyebrow>
+                <Eyebrow>
+                  {doc.pages} pages · {doc.edition}
+                </Eyebrow>
                 <h3>{doc.name}</h3>
                 <p>{doc.description}</p>
                 <div className="download-actions">
@@ -1182,6 +1142,12 @@ function DownloadsPage() {
           ))}
         </div>
         <div className="offline-steps">
+          <h2>Original guides, unchanged</h2>
+          <p>
+            These are the original editions for 30 October–8 November 2026 (10 days), not re-created
+            12-day PDFs. The interactive itinerary in this app has 12 provisional days; the
+            downloadable publications keep their original scope and wording.
+          </p>
           <h2>Prepare your phone for airplane mode</h2>
           <ol>
             <li>
@@ -1231,13 +1197,16 @@ function App() {
             <Route path="/itinerary" element={<ItineraryPage />} />
             <Route path="/day/:id" element={<DayPage />} />
             <Route path="/explore" element={<ExplorePage />} />
-            <Route path="/map" element={<MapPage />} />
-            <Route path="/safety" element={<SafetyPage />} />
-            <Route path="/emergency" element={<EmergencyPage />} />
             <Route path="/culture" element={<CulturePage />} />
+            <Route path="/culture/guide" element={<MuseumsGuide />} />
             <Route path="/culture/venue/:id" element={<VenuePage />} />
             <Route path="/culture/robben-island" element={<RobbenIslandPage />} />
             <Route path="/family-ideas" element={<FamilyIdeasPage />} />
+            <Route path="/family" element={<FamilyGuide />} />
+            <Route path="/robben-island" element={<RobbenGuide />} />
+            <Route path="/map" element={<MapPage />} />
+            <Route path="/safety" element={<SafetyPage />} />
+            <Route path="/emergency" element={<EmergencyPage />} />
             <Route path="/practical" element={<PracticalPage />} />
             <Route path="/downloads" element={<DownloadsPage />} />
             <Route path="*" element={<NotFound />} />

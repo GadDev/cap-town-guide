@@ -1,8 +1,9 @@
 name: CI
 on:
   push:
-    branches: [main, 'feat/**']
+    branches: [main, 'feat/**', 'fix/**']
   pull_request:
+  workflow_dispatch:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -14,6 +15,7 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund
+      - run: npm run guides:verify
       - run: npm run lint
       - name: Check formatting of changed source files
         if: github.event_name == 'pull_request'
@@ -28,7 +30,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cape-town-12-day-pdf-guides
+          name: cape-town-original-10-day-pdf-guides
           path: dist/guides/*.pdf
       - uses: actions/upload-artifact@v4
         if: failure()

@@ -14,7 +14,7 @@ import {
   TriangleAlert,
 } from 'lucide-react';
 import { DISTRICTS, FAMILY_OPTIONS, MUSEUMS, ROBBEN_ISLAND, type GuideVenue } from './museum-data';
-import './culture.css';
+import './culture-pages.css';
 const google = (a: string) =>
   'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(a);
 function SectionHead({
@@ -77,7 +77,7 @@ export function CulturePage() {
           Monkey Valley and exclude traffic and parking.
         </div>
       </div>
-      <div className="culture-intro">
+      <div className="culture-page-intro">
         <div className="culture-highlight">
           <BookOpen size={24} />
           <h2>Which museum fits today?</h2>
@@ -146,7 +146,7 @@ export function CulturePage() {
                 <Baby size={16} />
                 {d.children}
               </p>
-              <div className="culture-links">
+              <div className="culture-page-links">
                 {d.links.map((id) => (
                   <Link key={id} to={'/culture/venue/' + id}>
                     Visit {MUSEUMS.find((m) => m.id === id)?.name || id}
