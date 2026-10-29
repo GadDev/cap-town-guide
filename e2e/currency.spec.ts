@@ -48,15 +48,23 @@ test('currency converter works in both directions for euros, dollars and pounds'
 test('offline converter retains EUR reverse fallback without inventing dollar rates', async ({
   page,
 }) => {
+  await page.route('https://api.frankfurter.dev/v2/rates?base=EUR&quotes=ZAR,USD,GBP', (route) =>
+    route.abort(),
+  );
+  await page.setViewportSize({ width: 320, height: 568 });
   await page.goto('/practical');
   await page.getByLabel('Source currency').selectOption('ZAR');
   await page.getByLabel('Amount to convert').fill('185.339');
   const result = page.getByTestId('converted-amount');
-  // Without stored rates, EUR uses the documented 28 Oct 2026 reference.
-  await expect
-    .poll(() => result.textContent())
-    .not.toBeNull();
+  await expect(result).toHaveText(
+    new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'EUR' }).format(10),
+  );
   await page.getByLabel('Target currency').selectOption('GBP');
-  // With no live rates, GBP is intentionally unavailable unless data was fetched.
-  await expect(page.getByLabel('Source currency')).toHaveValue('ZAR');
+  await expect(result).toHaveText('—');
+  await expect(page.getByText(/Connect once to fetch USD\/GBP/)).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Swap currencies' })).toBeVisible();
+  const fields = page.locator('.converter-fields');
+  const box = await fields.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box!.x + box!.width).toBeLessThanOrEqual(320);
 });
