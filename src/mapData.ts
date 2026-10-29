@@ -11,6 +11,24 @@ foodbarn:[-34.0977,18.3642],thorfynns:[-34.0974,18.3599],berthas:[-34.1930,18.43
 dunes:[-34.0474,18.3482],jonkershuis:[-34.0276,18.4204],olympia:[-34.1279,18.4504],
 harbourhouse:[-34.1293,18.4518],market:[-33.9051,18.4189],hospital1:[-34.1363,18.4310],
 hospital2:[-34.0669,18.4555],hospital3:[-34.0378,18.4756]
+  // Approximate neighbourhood reference points for the expanded culture and family guide.
+  'slave-lodge': [-33.9244, 18.4209],
+  'south-african-museum': [-33.929, 18.416],
+  'national-gallery': [-33.93, 18.415],
+  'bo-kaap-museum': [-33.92, 18.412],
+  'zeitz': [-33.9095, 18.419],
+  'blue-train-park': [-33.8995, 18.395],
+  'green-point-park': [-33.904, 18.403],
+  'imhoff': [-34.148, 18.354],
+  'oranjezicht': [-33.903, 18.414],
+  'norval': [-34.075, 18.438],
+  'science-centre': [-33.94, 18.461],
+  'gold': [-33.917, 18.412],
+  'clay-cafe': [-34.048, 18.352],
+  'castle': [-33.925, 18.427],
+  'coffeebloc': [-34.026, 18.42],
+  'longbeach-mall': [-34.117, 18.389],
+  'book-lounge': [-33.932, 18.425],
 };
 export function pinForPlace(place:Place):[number,number]|null {const x=REFERENCE_PINS[place.id];return x?[x[0],x[1]]:null}
 export const PENINSULA_LAND:[number,number][]=[

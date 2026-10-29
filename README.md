@@ -45,6 +45,19 @@ Core content was adapted from the two original 28 October 2026 guides. The added
 
 `npm run check` runs strict TypeScript checking, `npm test` checks itinerary integrity and emergency data, and `npm run build` creates deployable files/PDFs with PWA precaching. CI runs these jobs on pushes and PRs and uploads the generated PDF files as build artifacts.
 
+## Linting and formatting
+
+The project uses **Oxlint** for fast JavaScript/TypeScript/React linting and **Oxfmt** for consistent formatting.
+
+```bash
+npm run lint            # report lint diagnostics
+npm run lint:fix        # apply available safe lint fixes
+npm run format          # format supported tracked source/config/document files in place
+npm run format:check    # verify repository-wide formatting without writing files
+```
+
+Both tools are installed as dev dependencies via `npm install`; no global binaries are needed. CI lints the repository and checks Oxfmt **only on source files changed by each PR** (JS, TS, JSX, TSX, CSS), allowing existing compact formatting to be migrated gradually without an unrelated whole-repository reformat. Full `npm run format:check` may report pre-existing files until they are formatted. Generated files, public assets, and build outputs are excluded.
+
 ## Project scope and future improvements
 
 This is a first functional edition prioritizing travel essentials for departure day. Potential improvements: verified properly licensed photography including species images, interactive offline vector basemaps with storage controls, deeper destination articles and browser-based Playwright airplane-mode verification. Map directions and live warnings remain online-only.

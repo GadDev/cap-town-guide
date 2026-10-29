@@ -1,6 +1,6 @@
 import {useEffect,useMemo,useState} from 'react';
 import {MapContainer,CircleMarker,TileLayer,Polygon,Polyline,Popup,Tooltip,useMap} from 'react-leaflet';
-import {ExternalLink,MapPin,Navigation,WifiOff,Wifi,Search,Layers} from 'lucide-react';
+import {ExternalLink,Navigation,WifiOff,Wifi,Search,Layers} from 'lucide-react';
 import type {Place} from './data';
 import {PENINSULA_LAND,CATEGORY_COLOR,pinForPlace} from './mapData';
 import 'leaflet/dist/leaflet.css';
