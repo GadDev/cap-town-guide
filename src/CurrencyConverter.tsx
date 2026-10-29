@@ -1,8 +1,29 @@
 import { useEffect, useState } from 'react';
-import { RefreshCw, WifiOff } from 'lucide-react';
+import { ArrowLeftRight, RefreshCw, WifiOff } from 'lucide-react';
 import './currency.css';
-import { historicEurZar, parseRates, type Currency, type Rates } from './currency';
+import {
+  convertRand,
+  historicEurZar,
+  parseRates,
+  type Currency,
+  type Rates,
+  type SupportedCurrency,
+} from './currency';
+
 const CACHE_KEY = 'cape:fx-2026';
+const CURRENCIES: { value: SupportedCurrency; label: string }[] = [
+  { value: 'EUR', label: 'EUR — Euro (€)' },
+  { value: 'USD', label: 'USD — US Dollar ($)' },
+  { value: 'GBP', label: 'GBP — British Pound (£)' },
+  { value: 'ZAR', label: 'ZAR — South African Rand (R)' },
+];
+const CURRENCY_NAMES: Record<SupportedCurrency, string> = {
+  EUR: 'euros',
+  USD: 'US dollars',
+  GBP: 'pounds sterling',
+  ZAR: 'South African rand',
+};
+
 function saved(): Rates | null {
   try {
     const s = localStorage.getItem(CACHE_KEY);
@@ -18,13 +39,16 @@ function saved(): Rates | null {
     return null;
   }
 }
+
 export function CurrencyConverter() {
-  const [currency, setCurrency] = useState<Currency>('EUR'),
-    [amount, setAmount] = useState('100'),
-    [rates, setRates] = useState<Rates | null>(saved),
-    [loading, setLoading] = useState(false),
-    [message, setMessage] = useState('');
+  const [foreignCurrency, setForeignCurrency] = useState<Currency>('EUR');
+  const [randFirst, setRandFirst] = useState(false);
+  const [amount, setAmount] = useState('100');
+  const [rates, setRates] = useState<Rates | null>(saved);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
   const [online, setOnline] = useState(navigator.onLine);
+
   async function refresh() {
     if (!navigator.onLine) {
       setMessage('Offline: last saved rates used.');
@@ -53,6 +77,7 @@ export function CurrencyConverter() {
       setLoading(false);
     }
   }
+
   useEffect(() => {
     const update = () => setOnline(navigator.onLine);
     window.addEventListener('online', update);
@@ -63,20 +88,43 @@ export function CurrencyConverter() {
       window.removeEventListener('offline', update);
     };
   }, []);
-  const n = Number(amount),
-    valid = amount.trim() !== '' && Number.isFinite(n) && n >= 0;
-  const rate = rates?.value[currency] ?? (currency === 'EUR' ? historicEurZar : null);
+
+  // Keep ZAR on exactly one side while letting either selector choose the direction.
+  const from: SupportedCurrency = randFirst ? 'ZAR' : foreignCurrency;
+  const to: SupportedCurrency = randFirst ? foreignCurrency : 'ZAR';
+  const n = Number(amount);
+  const valid = amount.trim() !== '' && Number.isFinite(n) && n >= 0;
+  const converted = valid ? convertRand(n, from, to, rates) : null;
   const result =
-    valid && rate !== null
-      ? new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR' }).format(n * rate)
-      : '—';
+    converted === null
+      ? '—'
+      : new Intl.NumberFormat('en-ZA', { style: 'currency', currency: to }).format(converted);
+
+  function changeFrom(next: SupportedCurrency) {
+    if (next === 'ZAR') {
+      setRandFirst(true);
+    } else {
+      setForeignCurrency(next);
+      setRandFirst(false);
+    }
+  }
+
+  function changeTo(next: SupportedCurrency) {
+    if (next === 'ZAR') {
+      setRandFirst(false);
+    } else {
+      setForeignCurrency(next);
+      setRandFirst(true);
+    }
+  }
+
   return (
     <section className="currency-converter">
       <div className="converter-heading">
         <div>
           <span className="eyebrow">RAND IN YOUR POCKET</span>
           <h2>Currency converter</h2>
-          <p>Euros, US dollars and pounds sterling → South African rand.</p>
+          <p>Convert euros, US dollars or pounds to rand — and rand back again.</p>
         </div>
         <button
           type="button"
@@ -104,24 +152,51 @@ export function CurrencyConverter() {
           From
           <select
             aria-label="Source currency"
-            value={currency}
-            onChange={(e) => setCurrency(e.target.value as Currency)}
+            value={from}
+            onChange={(e) => changeFrom(e.target.value as SupportedCurrency)}
           >
-            <option value="EUR">EUR — Euro (€)</option>
-            <option value="USD">USD — US Dollar ($)</option>
-            <option value="GBP">GBP — British Pound (£)</option>
+            {CURRENCIES.map(({ value, label }) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
           </select>
         </label>
-        <div className="converter-result">
-          <span>IN SOUTH AFRICAN RAND</span>
-          <strong data-testid="rand-amount">{result}</strong>
+        <button
+          type="button"
+          className="converter-swap"
+          aria-label="Swap currencies"
+          title="Swap currencies"
+          onClick={() => setRandFirst((previous) => !previous)}
+        >
+          <ArrowLeftRight size={20} aria-hidden="true" />
+        </button>
+        <label>
+          To
+          <select
+            aria-label="Target currency"
+            value={to}
+            onChange={(e) => changeTo(e.target.value as SupportedCurrency)}
+          >
+            {CURRENCIES.map(({ value, label }) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div className="converter-result" aria-label={`Converted amount in ${to}`}>
+          <span>IN {CURRENCY_NAMES[to].toUpperCase()}</span>
+          <strong data-testid="converted-amount" aria-live="polite">
+            {result}
+          </strong>
         </div>
       </div>
       <div className="converter-foot">
         <span>
           {rates
             ? 'Rates dated ' + rates.date + ' · Frankfurter central-bank reference'
-            : 'Fallback: ECB EUR/ZAR dated 28 Oct 2026 (18.5339). Sync for USD and GBP.'}
+            : `Fallback: ECB EUR↔ZAR dated 28 Oct 2026 (${historicEurZar}). Sync for USD and GBP.`}
         </span>
         {!online && (
           <span>
@@ -129,7 +204,7 @@ export function CurrencyConverter() {
           </span>
         )}
       </div>
-      {!rates && currency !== 'EUR' && (
+      {!rates && foreignCurrency !== 'EUR' && (
         <p className="converter-alert">
           Connect once to fetch USD/GBP exchange rates. We never guess unknown rates.
         </p>
