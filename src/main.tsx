@@ -241,10 +241,8 @@ function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div>
             <Link to="/emergency">Emergency</Link> · <Link to="/practical">Practical</Link> ·{' '}
-            <Link to="/downloads">PDF guides</Link> ·{' '}
-            <Link to="/culture">Culture</Link> ·{' '}
-            <Link to="/family">Family</Link> ·{' '}
-            <Link to="/robben-island">Robben Island</Link>
+            <Link to="/downloads">PDF guides</Link> · <Link to="/culture">Culture</Link> ·{' '}
+            <Link to="/family">Family</Link> · <Link to="/robben-island">Robben Island</Link>
             <p>Research snapshot: 28 October 2026 · No bookings made.</p>
           </div>
         </div>
