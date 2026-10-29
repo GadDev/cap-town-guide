@@ -17,7 +17,6 @@ import { DISTRICTS, FAMILY_OPTIONS, MUSEUMS, ROBBEN_ISLAND, type GuideVenue } fr
 import './culture.css';
 const google = (a: string) =>
   'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(a);
-const display = (s: string) => <span>{s}</span>;
 function SectionHead({
   label,
   title,
