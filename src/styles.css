@@ -24,3 +24,5 @@ h1,h2,h3,h4,p{margin-top:0}h1,h2,h3,.display-heading,.brand strong{font-family:'
 /* Locally bundled Unsplash photographs are fetched at build time; illustrated shapes remain fallback. */
 .art.has-photo,.day-thumb,.place-visual{background-position:center;background-size:cover}
 .art.has-photo .art-sun,.art.has-photo .art-range,.art.has-photo .art-wave{opacity:.025}
+
+.trip-date{display:flex;flex-direction:column;gap:5px;padding:12px 18px}.trip-date span{font-size:.65rem;font-weight:800;letter-spacing:.12em;color:#8b7668}.trip-date input{border:1px solid #bfd0bf;border-radius:4px;padding:7px;color:#234840;background:#fffdf8;font-weight:700;font-size:.83rem}
