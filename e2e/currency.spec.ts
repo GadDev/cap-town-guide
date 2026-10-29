@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-test('currency converter works in both directions for euros, dollars and pounds', async ({ page }) => {
+test('currency converter works in both directions for euros, dollars and pounds', async ({
+  page,
+}) => {
   await page.route('https://api.frankfurter.dev/v2/rates?base=EUR&quotes=ZAR,USD,GBP', (route) =>
     route.fulfill({
       json: [
