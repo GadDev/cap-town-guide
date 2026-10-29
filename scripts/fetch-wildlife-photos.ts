@@ -12,7 +12,7 @@ async function download(id:string,filename:string){
  const quoted=encodeURIComponent(file).replace(/%2F/g,'/');
  const thumb='https://upload.wikimedia.org/wikipedia/commons/thumb/'+hash[0]+'/'+hash.slice(0,2)+'/'+quoted+'/640px-'+quoted;
  const fallback='https://commons.wikimedia.org/wiki/Special:Redirect/file/'+encodeURIComponent(filename)+'?width=640';
- for(const url of [thumb,fallback]){
+ for(const url of [fallback,thumb]){
   for(let attempt=0;attempt<2;attempt++){
     try{
       const response=await fetch(url,{signal:AbortSignal.timeout(17000),headers:{'User-Agent':'CapeTownExplorer/1.0 (educational field guide; contact via github.com/GadDev/cap-town-guide)'}});
