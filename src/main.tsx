@@ -53,6 +53,7 @@ import {
 } from './data';
 import { EXTRA_PLACES } from './expanded-guide';
 import { MuseumsGuide, FamilyGuide, RobbenGuide } from './CultureGuide';
+import { HazardPhotos, WildlifeLegend } from './WildlifePhotos';
 import { CurrencyConverter } from './CurrencyConverter';
 import './styles.css';
 
@@ -860,6 +861,7 @@ function SafetyPage() {
             </p>
           </div>
         </div>
+        <WildlifeLegend />
         <div className="filters" role="group" aria-label="Filter hazards">
           {groups.map((t) => (
             <button key={t} className={group === t ? 'on' : ''} onClick={() => setGroup(t)}>
@@ -901,13 +903,14 @@ function SafetyPage() {
               </div>
               <h3>{h.name}</h3>
               {h.latin && <i>{h.latin}</i>}
+              <HazardPhotos hazard={h.name} />
               <p>{h.recognition}</p>
               <h4>How to avoid trouble</h4>
               <p>{h.prevention}</p>
               <h4>What to do</h4>
               <p>{h.response}</p>
               <small>
-                Reference: {h.source} · image-free text guide, not an identification tool
+                Reference: {h.source} · photographs are references, not an identification tool
               </small>
             </article>
           ))}
