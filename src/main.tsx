@@ -55,6 +55,7 @@ import { EXTRA_PLACES } from './expanded-guide';
 import { MuseumsGuide, FamilyGuide, RobbenGuide } from './CultureGuide';
 import { HazardPhotos, WildlifeLegend } from './WildlifePhotos';
 import { CurrencyConverter } from './CurrencyConverter';
+import { ORIGINAL_GUIDES } from './guides';
 import { InteractiveMap } from './InteractiveMap';
 import './styles.css';
 
@@ -1021,21 +1022,7 @@ function PracticalPage() {
     </>
   );
 }
-const DOCS = [
-  {
-    name: 'Cape Town Family Travel Magazine',
-    pages: '12-day editorial edition',
-    file: '/guides/Cape_Town_Family_Travel_Magazine_2026_12_Days.pdf',
-    description: 'The visual journey: landscape, history, food and the daily stories.',
-  },
-  {
-    name: 'Family Printable Field Guide',
-    pages: '12-day practical edition',
-    file: '/guides/Cape_Town_Family_Printable_Field_Guide_2026_12_Days.pdf',
-    description:
-      'A4-friendly quick reference: each day, safety, emergency contacts and checklists.',
-  },
-];
+const DOCS = ORIGINAL_GUIDES;
 function DownloadsPage() {
   const s = travel();
   const [cached, setCached] = useState<Record<string, boolean>>({});
@@ -1065,7 +1052,7 @@ function DownloadsPage() {
       <PageTitle
         kicker="YOUR DIGITAL LIBRARY"
         title="Two guides, one Cape."
-        sub="Download the 12-day editions before setting off. Both PDFs are also precached by the installed application when storage allows."
+        sub="Download the original 10-day, 2026 editions. Save them to Files before travelling; the installed app also caches them for offline reading when storage allows."
       />
       <section className="container section">
         <div className="download-grid">
@@ -1074,11 +1061,13 @@ function DownloadsPage() {
               <div className={'pdf-cover ' + (i === 0 ? 'magazine' : 'print-cover')}>
                 <Eyebrow>CAPE TOWN · 2026</Eyebrow>
                 <h2>{i === 0 ? 'A family journey' : 'The field guide'}</h2>
-                <span>12 DAYS AT THE EDGE OF AFRICA</span>
+                <span>10 DAYS AT THE EDGE OF AFRICA</span>
                 <div className="pdf-mountain" />
               </div>
               <div>
-                <Eyebrow>{doc.pages}</Eyebrow>
+                <Eyebrow>
+                  {doc.pages} pages · {doc.edition}
+                </Eyebrow>
                 <h3>{doc.name}</h3>
                 <p>{doc.description}</p>
                 <div className="download-actions">
@@ -1102,6 +1091,12 @@ function DownloadsPage() {
           ))}
         </div>
         <div className="offline-steps">
+          <h2>Original guides, unchanged</h2>
+          <p>
+            These are the original editions for 30 October–8 November 2026 (10 days), not re-created
+            12-day PDFs. The interactive itinerary in this app has 12 provisional days; the
+            downloadable publications keep their original scope and wording.
+          </p>
           <h2>Prepare your phone for airplane mode</h2>
           <ol>
             <li>

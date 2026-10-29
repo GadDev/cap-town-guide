@@ -23,22 +23,29 @@ test('twelve-day itinerary, locally saved notes and offline emergency reload', a
     )
     .toBeTruthy();
   await context.setOffline(true);
-  await expect
-    .poll(
-      () =>
-        page.evaluate(async () => {
-          try {
-            const r = await fetch(
-              '/guides/Cape_Town_Family_Printable_Field_Guide_2026_12_Days.pdf',
-            );
-            return r.ok && (await r.arrayBuffer()).byteLength > 1000;
-          } catch {
-            return false;
-          }
-        }),
-      { timeout: 20000 },
-    )
-    .toBeTruthy();
+  for (const name of [
+    'Cape_Town_Family_Printable_Field_Guide_2026.pdf',
+    'Cape_Town_Family_Travel_Magazine_2026.pdf',
+  ]) {
+    await expect
+      .poll(
+        () =>
+          page.evaluate(async (name) => {
+            try {
+              const r = await fetch('/guides/' + name);
+              if (!r.ok) return false;
+              const b = new Uint8Array(await r.arrayBuffer());
+              return b.length > 100000 && new TextDecoder().decode(b.subarray(0, 5)) === '%PDF-';
+            } catch {
+              return false;
+            }
+          }, name),
+        { timeout: 20000 },
+      )
+      .toBeTruthy();
+  }
+  await page.goto('/downloads');
+  await expect(page.getByRole('link', { name: /Download PDF/i })).toHaveCount(2);
   await page.goto('/emergency');
   await expect(page.getByRole('heading', { name: /Help, without a hunt/i })).toBeVisible();
   await expect(page.getByRole('link', { name: /CALL 112/i })).toHaveAttribute('href', 'tel:112');
