@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {MUSEUMS,FAMILY_OPTIONS,DISTRICTS,ROBBEN_ISLAND,EXTRA_PLACES} from '../src/museum-data.ts';
+test('museum directory has complete M1-M6 entries',()=>{assert.equal(MUSEUMS.length,6);assert.deepEqual(MUSEUMS.map(v=>v.code).sort(),['M1','M2','M3','M4','M5','M6']);for(const m of MUSEUMS){assert.ok(m.hours.length>10);assert.ok(m.cost.length>5);assert.ok(m.children.length>30);assert.ok(m.booking.length>20);assert.ok(m.url.startsWith('https://'));}});
+test('district and family additions match field guide',()=>{assert.equal(DISTRICTS.length,6);assert.equal(FAMILY_OPTIONS.length,9);assert.deepEqual(FAMILY_OPTIONS.map(v=>v.code).sort(),['F1','F2','F3','F4','F5','F6','F7','F8','F9']);assert.ok(EXTRA_PLACES.length>=16);});
+test('Robben Island guidance covers family reality',()=>{assert.match(ROBBEN_ISLAND.admission,/1,820/);assert.match(ROBBEN_ISLAND.children,/lifejackets/);assert.match(ROBBEN_ISLAND.cancelled,/cancelled/);assert.match(ROBBEN_ISLAND.alternative,/Day 8/);});
