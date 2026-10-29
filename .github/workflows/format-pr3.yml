@@ -1,0 +1,29 @@
+name: Autoformat expanded guide PR #3
+on:
+  push:
+    branches:
+      - feat/expanded-guide-museums-wildlife-maps
+permissions:
+  contents: write
+jobs:
+  format-expanded-guide:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --no-audit --no-fund
+      - name: Format updated TypeScript and CSS using project Oxfmt config
+        run: npx oxfmt src/main.tsx src/CultureGuide.tsx src/expanded-guide.ts src/culture.css src/guide-nav.css tests/expanded-guide.test.ts
+      - name: Save formatting to PR branch
+        run: |
+          if ! git diff --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add src/main.tsx src/CultureGuide.tsx src/expanded-guide.ts src/culture.css src/guide-nav.css tests/expanded-guide.test.ts
+            git commit -m "style: format expanded Cape Town guide"
+            git push
+          fi

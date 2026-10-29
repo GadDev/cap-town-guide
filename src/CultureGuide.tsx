@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {Link} from 'react-router-dom';
-import {BookOpen,CalendarDays,ExternalLink,Heart,Info,MapPin,Phone,Ship,Waves} from 'lucide-react';
+import {BookOpen,CalendarDays,ExternalLink,Heart,Info,MapPin,Phone,Ship} from 'lucide-react';
 import {DISTRICTS,FAMILY_OPTIONS,MUSEUMS,ROBBEN_ISLAND,type GuideVenue} from './expanded-guide';
 import './culture.css';
 import './guide-nav.css';
