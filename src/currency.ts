@@ -29,8 +29,7 @@ export function convertRand(
   to: SupportedCurrency,
   rates: Rates | null,
 ): number | null {
-  if (!Number.isFinite(amount) || amount < 0 || (from === 'ZAR') === (to === 'ZAR'))
-    return null;
+  if (!Number.isFinite(amount) || amount < 0 || (from === 'ZAR') === (to === 'ZAR')) return null;
 
   const foreign = from === 'ZAR' ? (to as Currency) : (from as Currency);
   const rate = rates?.value[foreign] ?? (foreign === 'EUR' ? historicEurZar : null);
