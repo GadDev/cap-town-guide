@@ -20,7 +20,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cape-town-12-day-pdf-guides
+          name: cape-town-original-10-day-pdf-guides
           path: dist/guides/*.pdf
       - uses: actions/upload-artifact@v4
         if: failure()

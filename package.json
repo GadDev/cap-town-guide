@@ -5,14 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "pdf:generate": "tsx scripts/generate-guides.ts",
-    "build": "npm run icons:generate && npm run images:fetch && npm run pdf:generate && tsc --noEmit && vite build",
+    "build": "npm run icons:generate && npm run images:fetch && npm run guides:verify && tsc --noEmit && vite build",
     "preview": "vite preview",
     "check": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
     "images:fetch": "tsx scripts/fetch-photos.ts",
     "icons:generate": "tsx scripts/generate-icons.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "guides:verify": "tsx scripts/verify-guides.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
@@ -20,7 +20,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.468.0",
-    "pdfkit": "^0.17.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.0",
@@ -28,7 +27,6 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
-    "@types/pdfkit": "^0.17.3",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^5.0.0",
