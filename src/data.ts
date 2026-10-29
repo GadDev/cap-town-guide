@@ -844,6 +844,17 @@ export const HAZARDS: Hazard[] = [
     source: 'City of Cape Town spider safety',
   },
   {
+    name: 'Rain spiders',
+    group: 'Spiders',
+    level: 'Caution',
+    recognition:
+      'Large, fast-moving huntsman spiders can look alarming but are not among the primary medically important spiders in the region.',
+    prevention: 'Do not handle spiders; ask resort staff to move one safely if necessary.',
+    response:
+      'For bites with severe pain or unusual symptoms in a child, contact a medical professional. Do not attempt species identification by catching a spider.',
+    source: 'African Snakebite Institute; updated field guide pp. 39–40',
+  },
+  {
     name: 'Scorpions',
     group: 'Scorpions',
     level: 'Serious',

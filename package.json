@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "pdf:generate": "tsx scripts/generate-guides.ts",
-    "build": "npm run icons:generate && npm run images:fetch && npm run pdf:generate && tsc --noEmit && vite build",
+    "build": "npm run icons:generate && npm run images:fetch && npm run wildlife:photos && npm run pdf:generate && tsc --noEmit && vite build",
     "preview": "vite preview",
     "check": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
@@ -16,7 +16,8 @@
     "lint": "oxlint .",
     "lint:fix": "oxlint --fix .",
     "format": "oxfmt .",
-    "format:check": "oxfmt --check ."
+    "format:check": "oxfmt --check .",
+    "wildlife:photos": "tsx scripts/fetch-wildlife-photos.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
