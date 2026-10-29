@@ -1,0 +1,27 @@
+name: Format wildlife safety PR 4
+on:
+  push:
+    branches: [feat/offline-wildlife-safety-photographs]
+permissions:
+  contents: write
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --no-audit --no-fund
+      - run: npx oxfmt src/main.tsx src/data.ts src/WildlifePhotos.tsx src/wildlifePhotos.ts src/wildlife.css scripts/fetch-wildlife-photos.ts tests/wildlife.test.ts
+      - name: Commit formatted files
+        run: |
+          if ! git diff --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add src/main.tsx src/data.ts src/WildlifePhotos.tsx src/wildlifePhotos.ts src/wildlife.css scripts/fetch-wildlife-photos.ts tests/wildlife.test.ts
+            git commit -m "style: format offline wildlife photo integration"
+            git push
+          fi

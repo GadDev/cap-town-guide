@@ -1,12 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "eslint",
-    "typescript",
-    "react",
-    "unicorn",
-    "oxc"
-  ],
+  "plugins": ["eslint", "typescript", "react", "unicorn", "oxc"],
   "categories": {
     "correctness": "warn"
   },
@@ -14,11 +8,5 @@
     "browser": true,
     "node": true
   },
-  "ignorePatterns": [
-    "node_modules/**",
-    "dist/**",
-    "coverage/**",
-    "test-results/**",
-    "public/**"
-  ]
+  "ignorePatterns": ["node_modules/**", "dist/**", "coverage/**", "test-results/**", "public/**"]
 }

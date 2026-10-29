@@ -1,88 +1,1024 @@
-export type Event = {label:string; text:string};
+export type Event = { label: string; text: string };
 export type Day = {
-  id:number; date:string; weekday:string; title:string; subtitle:string; area:string; icon:string;
-  budget:string; drive:string; hero:string; events:Event[]; weather:string; toddler:string; booking:string; alert?:string;
+  id: number;
+  date: string;
+  weekday: string;
+  title: string;
+  subtitle: string;
+  area: string;
+  icon: string;
+  budget: string;
+  drive: string;
+  hero: string;
+  events: Event[];
+  weather: string;
+  toddler: string;
+  booking: string;
+  alert?: string;
 };
-export type Place = {id:string; name:string; category:'Nature'|'Culture'|'Family'|'Food'|'Wine'|'Services'; area:string; description:string; address:string; minutes:string; cost:string; note:string; url?:string; day?:number; symbol?:string};
-export type Hazard = {name:string; latin?:string; group:string; level:'Caution'|'Serious'|'Emergency if exposed'; recognition:string; prevention:string; response:string; source:string};
-export const TRIP = {title:'Cape Town, a family journey',start:'2026-10-30',end:'2026-11-10',depart:'2026-10-29',base:'Monkey Valley Resort',address:'1 Mountain Road, Noordhoek, Cape Town',guests:'2 adults · children aged 2 & 4',researchDate:'28 October 2026',currencyRate:18.5339};
-export const DAYS:Day[] = [
-{id:1,date:'2026-10-30',weekday:'Friday',title:'Arrive, breathe, find the sea',subtitle:'A slow beginning among the milkwoods',area:'Noordhoek',icon:'🌊',budget:'R900–1,500',drive:'Airport → resort: 50–75 min in light traffic, allow 90+',hero:'noordhoek',events:[{label:'Morning / arrival',text:'Collect the rental car or meet a pre-booked driver. Check both correctly sized child seats; use Airport Approach → N2 west → M3 south → M64 and confirm the final route with the resort.'},{label:'Lunch',text:'Thorfynns on-site, or Foodbarn Deli if arrival permits. Shop for water, nappies, fruit and familiar snacks.'},{label:'Quiet afternoon',text:'Unpack, check pool and balcony barriers, rest, then a short accompanied look at Noordhoek beach if daylight and conditions permit. Sand play, not sea swimming.'},{label:'Early dinner',text:'Thorfynns around 17:30–18:00 if the kitchen confirms.'}],weather:'Rain or wind: stay in, settle down and rest.',toddler:'One adult handles luggage while the other stays with both children. Check access to water, balcony gaps and hot taps.',booking:'Confirm arrival, cot, meals, pool facilities and safe beach route with Monkey Valley reception.',alert:'No paid sightseeing necessary today.'},
-{id:2,date:'2026-10-31',weekday:'Saturday',title:'Small birds, enormous personality',subtitle:'The African penguins of Boulders',area:"Simon's Town",icon:'🐧',budget:'R1,800–2,600',drive:'35–45 min each way + lunch stop',hero:'penguin',events:[{label:'Morning',text:"Leave around 08:00. Spend 60–90 minutes on Foxy Beach's penguin boardwalks; observe birds without touching or following."},{label:'Lunch',text:"11:30–12:00 Bertha's at Quayside Centre in Simon's Town; request shade and confirm play area."},{label:'Afternoon',text:'Return for a nap and optional supervised resort pool play.'},{label:'Dinner',text:'Thorfynns or Foodbarn Deli takeaway.'}],weather:'Heavy rain: swap with a local slow day or the aquarium.',toddler:'Stay behind the boardwalk barriers, bring a carrier and sunhats; beach access and viewing boardwalk have different entries.',booking:'Published 28 October: Boulders seasonal hours 08:00–18:30. October family gate estimate R730; November R840. Confirm current fee and opening. Card-only gate.'},
-{id:3,date:'2026-11-01',weekday:'Sunday',title:'The road that follows the cliff',subtitle:"Chapman's Peak, the slow scenic way",area:'Atlantic Coast',icon:'🏔️',budget:'R1,200–1,900',drive:'25–35 min each way to Hout Bay, plus stops',hero:'chapmans',events:[{label:'Morning',text:"Check Chapman's Peak road status and weather. Drive north along M6; stop only in marked pull-offs behind barriers."},{label:'Lunch',text:'12:00 at Dunes in Hout Bay; book a terrace table overlooking the playground.'},{label:'Afternoon',text:'Drive back for naps by about 14:00; optional short beach-sand stroll.'},{label:'Dinner',text:'Easy dinner near home.'}],weather:'Road closed or strong wind: skip the drive, choose Café Roux lunch and Noordhoek Farm Village play.',toddler:'Use toilets before the coastal section; never unload children in an unsignposted roadside bay.',booking:'Verify road status/toll on chapmanspeakdrive.co.za and reserve Dunes Sunday lunch.'},
-{id:4,date:'2026-11-02',weekday:'Monday',title:'A garden with a mountain attached',subtitle:'Fynbos, birds and the Constantia valley',area:'Kirstenbosch / Constantia',icon:'🌿',budget:'R1,900–2,700',drive:'35–50 min to garden; 20–25 min to lunch',hero:'garden',events:[{label:'Morning',text:'Arrive at Kirstenbosch around 09:00. Wander lower pathways, pause on lawns, look for proteas and birds; canopy walkway only if energy allows.'},{label:'Lunch',text:'12:00 booked Jonkershuis at Groot Constantia, ideally lawn-side.'},{label:'Afternoon',text:'Rest at resort. If tasting wine, assign a sober driver first.'},{label:'Dinner',text:'Simple Foodbarn Deli or resort dinner.'}],weather:'Persistent rain: move the garden to another morning and try the aquarium as the main activity.',toddler:'Buggy useful on lower paths. The canopy approach is steeper; carry layers and change of clothes.',booking:'Dated reference: two adult admissions R540; children under 6 free. Confirm seasonal hours and Jonkershuis table.'},
-{id:5,date:'2026-11-03',weekday:'Tuesday',title:'Up into the tablecloth',subtitle:'A morning above the city',area:'Table Mountain / Camps Bay',icon:'☁️',budget:'R2,400–3,400',drive:'50–70 min to lower cable station + parking/queues',hero:'mountain',events:[{label:'Early morning',text:'Go only when Cableway is operating and mountain visibility is suitable. Aim for the first available cars; use a short, managed summit circuit.'},{label:'Lunch',text:'Simple Camps Bay lunch or return to Foodbarn Deli.'},{label:'Afternoon',text:'Home for rest; the promenade is an optional light stop, not a second expedition.'},{label:'Dinner',text:'Early meal near home.'}],weather:'Swap this entire day to the FIRST clear, operating Cableway morning. Never treat a closure as a reason to hike to the summit with toddlers.',toddler:'Windproof layers and a carrier are important; keep children close near edges and queues.',booking:'Published early-November first ascent 07:30; weather may close operations. Reference online family return R1,180; recheck tickets and status.',alert:'Weather-first day: use the swap-day control.'},
-{id:6,date:'2026-11-04',weekday:'Wednesday',title:'The peninsula runs out of land',subtitle:'Wind, stone, headlands and a big horizon',area:'Cape Point',icon:'🧭',budget:'R3,500–4,600',drive:'55–70 min to reserve gate + 20–30 min inside',hero:'ocean',events:[{label:'Morning',text:'Leave around 08:00 via Kommetjie and Scarborough. Visit one Cape Point viewpoint; take the funicular if operating and needed.'},{label:'Lunch',text:'11:30 at Two Oceans Restaurant inside the reserve; book and ask about highchairs.'},{label:'Afternoon',text:'Return home and let the car nap count as rest. The Cape of Good Hope sign is optional.'},{label:'Dinner',text:'Prearranged meal at resort or deli takeaway.'}],weather:'Strong wind, fog or closure: swap with the relaxed Noordhoek day.',toddler:'Keep food completely hidden near baboons, lock doors and close windows; carry children on steps.',booking:'Dated estimate: November family conservation fee R1,760 plus funicular. Recheck prices. No swimming at reserve beaches.',alert:'Baboons: do not feed or retrieve stolen food. No swimming at Diaz Beach.'},
-{id:7,date:'2026-11-05',weekday:'Thursday',title:'A holiday inside the holiday',subtitle:'Noordhoek, milkwood shade and a picnic',area:'Noordhoek',icon:'🧺',budget:'R2,000–2,800',drive:'10–15 min to vineyard',hero:'vineyard',events:[{label:'Slow morning',text:'Sleep in, enjoy the resort and a short supervised pool session if operating, or an accompanied beach walk.'},{label:'Lunch',text:'Pre-booked Cape Point Vineyards picnic; two adult and two child baskets had reference total R1,120 before drinks/service.'},{label:'Afternoon',text:'Nap, read, draw, enjoy the trees and quiet.'},{label:'Dinner',text:'Thorfynns or reserved Foodbarn.'}],weather:'Bad picnic weather: move or cancel subject to terms; choose Café Roux or Foodbarn instead.',toddler:'Water features are not fenced childcare. Cut grapes lengthways, avoid hard nuts and keep children in sight.',booking:'Confirm actual picnic operation, shade, child access and weather terms; booking required.'},
-{id:8,date:'2026-11-06',weekday:'Friday',title:'The city beyond the postcard',subtitle:'Bo-Kaap, District Six and the Waterfront',area:'Central Cape Town',icon:'🏘️',budget:'R1,500–2,300',drive:'50–70 min to city each way + local transfers',hero:'city',events:[{label:'Morning',text:'Respectful 15–20-minute Bo-Kaap look around Wale Street. Follow with a short District Six Museum visit if children are comfortable.'},{label:'Lunch',text:'Time Out Market at V&A Waterfront around 11:30; arrive ahead of crowds.'},{label:'Afternoon',text:'One short Watershed browse or just return for rest.'},{label:'Dinner',text:'Resort or pre-booked Foodbarn.'}],weather:'In rain or if the children need movement, choose Two Oceans Aquarium as the one main activity instead.',toddler:'Alternate adult museum reading; buggy access on Bo-Kaap slopes can be challenging. Hold hands at harbour edges.',booking:'District Six Museum entry historically R65 per adult; confirm dates/children. Treat the aquarium as a substitute, not extra.'},
-{id:9,date:'2026-11-07',weekday:'Saturday',title:'One estate, a whole landscape',subtitle:'The optional longer Winelands adventure',area:'Spier / Stellenbosch',icon:'🍇',budget:'R2,300–3,300',drive:'75–100 min each way, allow longer with traffic',hero:'vineyard',events:[{label:'Morning',text:'Only go if family energy suits a longer drive. Leave around 08:30 for Spier Elemental Play Garden and a short art walk.'},{label:'Lunch',text:'Prebooked Spier family picnic; collect within published midday window.'},{label:'Afternoon',text:'Leave around 14:00 for a car nap and a quiet final weekend evening.'},{label:'Dinner',text:'Simple early meal near Monkey Valley.'}],weather:'Skip after a rough night or poor forecast: stay near home with Café Roux or Constantia alternative.',toddler:'Water features and river need close supervision. Some activities have age minimums; hotel pool/kids club are for hotel guests.',booking:'Reference picnic estimate R1,250/family; reserve at least 24h ahead. Driver remains alcohol-free.',alert:'Optional excursion — an easy local day is equally good.'},
-{id:10,date:'2026-11-08',weekday:'Sunday',title:'Harbour colours and a tidal-pool morning',subtitle:'Kalk Bay, St James and a coast full of detail',area:'Kalk Bay / St James',icon:'🎨',budget:'R1,000–1,900 (estimate)',drive:'25–35 min to Kalk Bay, extra for St James',hero:'shore',events:[{label:'Morning',text:'Enjoy the colourful bathing huts and beach at St James. Consider the tidal pool only with current lifeguard cover, safe conditions and close adult supervision.'},{label:'Lunch',text:'Olympia Café & Bakery for takeaway or a casual café lunch; Harbour House for an optional reserved seafood table.'},{label:'Afternoon',text:'Short harbour look from a safe distance; avoid the edge and leave seals undisturbed. Return for a nap.'},{label:'Dinner',text:'Simple resort meal.'}],weather:'Persistent rain or rough sea: keep the outing to a bakery lunch, or enjoy an easy local day.',toddler:'Tidal pools still have slippery rocks, waves and changing water quality. Each non-swimmer needs a designated adult within arm’s reach.',booking:'New editorial day. Verify restaurant Sunday hours and city beach/water-quality alerts. Source: City of Cape Town St James Beach.'},
-{id:11,date:'2026-11-09',weekday:'Monday',title:'A world beneath the waves',subtitle:'Aquarium day, with a thoughtful history alternative',area:'V&A Waterfront',icon:'🐠',budget:'R1,400–2,500 (estimate)',drive:'50–70 min to Waterfront each way',hero:'aquarium',events:[{label:'Morning — family default',text:'Two Oceans Aquarium is a compact, weather-resilient main attraction. Aim for an early arrival and let the children choose their favourite exhibits.'},{label:'Lunch',text:'Easy choice at Time Out Market near the aquarium.'},{label:'Afternoon',text:'Very short promenade or return home for rest. Start packing.'},{label:'Alternative — culture',text:'Robben Island is an optional adult-focused cultural excursion, not a casual toddler add-on. Official museum tours take about 3.5–4 hours including ferries; conditions may cancel departures. Consider one adult attending while the other accompanies children elsewhere.'}],weather:'Rain: aquarium remains suitable. Robben Island ferry sailings are weather-dependent.',toddler:'For the museum excursion, account for long duration, ferry motion, fixed tour format and child needs; do not assume easy exits.',booking:'Aquarium family ticket reference R690 as of 28 Oct. Robben Island Museum peak-season tours: reserve only through official channels and check current terms.',alert:'Robben Island is optional; suitability for ages 2 and 4 is not guaranteed.'},
-{id:12,date:'2026-11-10',weekday:'Tuesday',title:'Leave room for one last look',subtitle:'A gentle departure, not a last-minute race',area:'Noordhoek / Airport',icon:'✈️',budget:'R700–1,300',drive:'Airport: 50–75 min in light traffic; allow 90+ road buffer',hero:'noordhoek',events:[{label:'Morning',text:'Breakfast, final room sweep, check travel documents, flight status, car return, medicine and children’s favourite toys.'},{label:'Lunch',text:'Resort or Café Roux only if the confirmed flight schedule makes it easy; otherwise eat at the airport.'},{label:'Airport',text:'Allow sufficient international check-in time (guide reference: 3 hours at terminal), plus rental return and child-seat removal.'},{label:'Evening',text:'Flight or airport meal. Carry a complete snack kit and spare clothes for each child.'}],weather:'Rain, traffic or road incidents: leave earlier and skip extra stops.',toddler:'Keep sleep toys, medicines, documents, wipes and two changes in carry-on. Remove children before unfastening child seats.',booking:'Return date and flight time are PROVISIONAL until verified with actual tickets; comply with current travel documentation rules.'}
+export type Place = {
+  id: string;
+  name: string;
+  category: 'Nature' | 'Culture' | 'Family' | 'Food' | 'Wine' | 'Services';
+  area: string;
+  description: string;
+  address: string;
+  minutes: string;
+  cost: string;
+  note: string;
+  url?: string;
+  day?: number;
+  symbol?: string;
+};
+export type Hazard = {
+  name: string;
+  latin?: string;
+  group: string;
+  level: 'Caution' | 'Serious' | 'Emergency if exposed';
+  recognition: string;
+  prevention: string;
+  response: string;
+  source: string;
+};
+export const TRIP = {
+  title: 'Cape Town, a family journey',
+  start: '2026-10-30',
+  end: '2026-11-10',
+  depart: '2026-10-29',
+  base: 'Monkey Valley Resort',
+  address: '1 Mountain Road, Noordhoek, Cape Town',
+  guests: '2 adults · children aged 2 & 4',
+  researchDate: '28 October 2026',
+  currencyRate: 18.5339,
+};
+export const DAYS: Day[] = [
+  {
+    id: 1,
+    date: '2026-10-30',
+    weekday: 'Friday',
+    title: 'Arrive, breathe, find the sea',
+    subtitle: 'A slow beginning among the milkwoods',
+    area: 'Noordhoek',
+    icon: '🌊',
+    budget: 'R900–1,500',
+    drive: 'Airport → resort: 50–75 min in light traffic, allow 90+',
+    hero: 'noordhoek',
+    events: [
+      {
+        label: 'Morning / arrival',
+        text: 'Collect the rental car or meet a pre-booked driver. Check both correctly sized child seats; use Airport Approach → N2 west → M3 south → M64 and confirm the final route with the resort.',
+      },
+      {
+        label: 'Lunch',
+        text: 'Thorfynns on-site, or Foodbarn Deli if arrival permits. Shop for water, nappies, fruit and familiar snacks.',
+      },
+      {
+        label: 'Quiet afternoon',
+        text: 'Unpack, check pool and balcony barriers, rest, then a short accompanied look at Noordhoek beach if daylight and conditions permit. Sand play, not sea swimming.',
+      },
+      { label: 'Early dinner', text: 'Thorfynns around 17:30–18:00 if the kitchen confirms.' },
+    ],
+    weather: 'Rain or wind: stay in, settle down and rest.',
+    toddler:
+      'One adult handles luggage while the other stays with both children. Check access to water, balcony gaps and hot taps.',
+    booking:
+      'Confirm arrival, cot, meals, pool facilities and safe beach route with Monkey Valley reception.',
+    alert: 'No paid sightseeing necessary today.',
+  },
+  {
+    id: 2,
+    date: '2026-10-31',
+    weekday: 'Saturday',
+    title: 'Small birds, enormous personality',
+    subtitle: 'The African penguins of Boulders',
+    area: "Simon's Town",
+    icon: '🐧',
+    budget: 'R1,800–2,600',
+    drive: '35–45 min each way + lunch stop',
+    hero: 'penguin',
+    events: [
+      {
+        label: 'Morning',
+        text: "Leave around 08:00. Spend 60–90 minutes on Foxy Beach's penguin boardwalks; observe birds without touching or following.",
+      },
+      {
+        label: 'Lunch',
+        text: "11:30–12:00 Bertha's at Quayside Centre in Simon's Town; request shade and confirm play area.",
+      },
+      { label: 'Afternoon', text: 'Return for a nap and optional supervised resort pool play.' },
+      { label: 'Dinner', text: 'Thorfynns or Foodbarn Deli takeaway.' },
+    ],
+    weather: 'Heavy rain: swap with a local slow day or the aquarium.',
+    toddler:
+      'Stay behind the boardwalk barriers, bring a carrier and sunhats; beach access and viewing boardwalk have different entries.',
+    booking:
+      'Published 28 October: Boulders seasonal hours 08:00–18:30. October family gate estimate R730; November R840. Confirm current fee and opening. Card-only gate.',
+  },
+  {
+    id: 3,
+    date: '2026-11-01',
+    weekday: 'Sunday',
+    title: 'The road that follows the cliff',
+    subtitle: "Chapman's Peak, the slow scenic way",
+    area: 'Atlantic Coast',
+    icon: '🏔️',
+    budget: 'R1,200–1,900',
+    drive: '25–35 min each way to Hout Bay, plus stops',
+    hero: 'chapmans',
+    events: [
+      {
+        label: 'Morning',
+        text: "Check Chapman's Peak road status and weather. Drive north along M6; stop only in marked pull-offs behind barriers.",
+      },
+      {
+        label: 'Lunch',
+        text: '12:00 at Dunes in Hout Bay; book a terrace table overlooking the playground.',
+      },
+      {
+        label: 'Afternoon',
+        text: 'Drive back for naps by about 14:00; optional short beach-sand stroll.',
+      },
+      { label: 'Dinner', text: 'Easy dinner near home.' },
+    ],
+    weather:
+      'Road closed or strong wind: skip the drive, choose Café Roux lunch and Noordhoek Farm Village play.',
+    toddler:
+      'Use toilets before the coastal section; never unload children in an unsignposted roadside bay.',
+    booking: 'Verify road status/toll on chapmanspeakdrive.co.za and reserve Dunes Sunday lunch.',
+  },
+  {
+    id: 4,
+    date: '2026-11-02',
+    weekday: 'Monday',
+    title: 'A garden with a mountain attached',
+    subtitle: 'Fynbos, birds and the Constantia valley',
+    area: 'Kirstenbosch / Constantia',
+    icon: '🌿',
+    budget: 'R1,900–2,700',
+    drive: '35–50 min to garden; 20–25 min to lunch',
+    hero: 'garden',
+    events: [
+      {
+        label: 'Morning',
+        text: 'Arrive at Kirstenbosch around 09:00. Wander lower pathways, pause on lawns, look for proteas and birds; canopy walkway only if energy allows.',
+      },
+      { label: 'Lunch', text: '12:00 booked Jonkershuis at Groot Constantia, ideally lawn-side.' },
+      { label: 'Afternoon', text: 'Rest at resort. If tasting wine, assign a sober driver first.' },
+      { label: 'Dinner', text: 'Simple Foodbarn Deli or resort dinner.' },
+    ],
+    weather:
+      'Persistent rain: move the garden to another morning and try the aquarium as the main activity.',
+    toddler:
+      'Buggy useful on lower paths. The canopy approach is steeper; carry layers and change of clothes.',
+    booking:
+      'Dated reference: two adult admissions R540; children under 6 free. Confirm seasonal hours and Jonkershuis table.',
+  },
+  {
+    id: 5,
+    date: '2026-11-03',
+    weekday: 'Tuesday',
+    title: 'Up into the tablecloth',
+    subtitle: 'A morning above the city',
+    area: 'Table Mountain / Camps Bay',
+    icon: '☁️',
+    budget: 'R2,400–3,400',
+    drive: '50–70 min to lower cable station + parking/queues',
+    hero: 'mountain',
+    events: [
+      {
+        label: 'Early morning',
+        text: 'Go only when Cableway is operating and mountain visibility is suitable. Aim for the first available cars; use a short, managed summit circuit.',
+      },
+      { label: 'Lunch', text: 'Simple Camps Bay lunch or return to Foodbarn Deli.' },
+      {
+        label: 'Afternoon',
+        text: 'Home for rest; the promenade is an optional light stop, not a second expedition.',
+      },
+      { label: 'Dinner', text: 'Early meal near home.' },
+    ],
+    weather:
+      'Swap this entire day to the FIRST clear, operating Cableway morning. Never treat a closure as a reason to hike to the summit with toddlers.',
+    toddler:
+      'Windproof layers and a carrier are important; keep children close near edges and queues.',
+    booking:
+      'Published early-November first ascent 07:30; weather may close operations. Reference online family return R1,180; recheck tickets and status.',
+    alert: 'Weather-first day: use the swap-day control.',
+  },
+  {
+    id: 6,
+    date: '2026-11-04',
+    weekday: 'Wednesday',
+    title: 'The peninsula runs out of land',
+    subtitle: 'Wind, stone, headlands and a big horizon',
+    area: 'Cape Point',
+    icon: '🧭',
+    budget: 'R3,500–4,600',
+    drive: '55–70 min to reserve gate + 20–30 min inside',
+    hero: 'ocean',
+    events: [
+      {
+        label: 'Morning',
+        text: 'Leave around 08:00 via Kommetjie and Scarborough. Visit one Cape Point viewpoint; take the funicular if operating and needed.',
+      },
+      {
+        label: 'Lunch',
+        text: '11:30 at Two Oceans Restaurant inside the reserve; book and ask about highchairs.',
+      },
+      {
+        label: 'Afternoon',
+        text: 'Return home and let the car nap count as rest. The Cape of Good Hope sign is optional.',
+      },
+      { label: 'Dinner', text: 'Prearranged meal at resort or deli takeaway.' },
+    ],
+    weather: 'Strong wind, fog or closure: swap with the relaxed Noordhoek day.',
+    toddler:
+      'Keep food completely hidden near baboons, lock doors and close windows; carry children on steps.',
+    booking:
+      'Dated estimate: November family conservation fee R1,760 plus funicular. Recheck prices. No swimming at reserve beaches.',
+    alert: 'Baboons: do not feed or retrieve stolen food. No swimming at Diaz Beach.',
+  },
+  {
+    id: 7,
+    date: '2026-11-05',
+    weekday: 'Thursday',
+    title: 'A holiday inside the holiday',
+    subtitle: 'Noordhoek, milkwood shade and a picnic',
+    area: 'Noordhoek',
+    icon: '🧺',
+    budget: 'R2,000–2,800',
+    drive: '10–15 min to vineyard',
+    hero: 'vineyard',
+    events: [
+      {
+        label: 'Slow morning',
+        text: 'Sleep in, enjoy the resort and a short supervised pool session if operating, or an accompanied beach walk.',
+      },
+      {
+        label: 'Lunch',
+        text: 'Pre-booked Cape Point Vineyards picnic; two adult and two child baskets had reference total R1,120 before drinks/service.',
+      },
+      { label: 'Afternoon', text: 'Nap, read, draw, enjoy the trees and quiet.' },
+      { label: 'Dinner', text: 'Thorfynns or reserved Foodbarn.' },
+    ],
+    weather:
+      'Bad picnic weather: move or cancel subject to terms; choose Café Roux or Foodbarn instead.',
+    toddler:
+      'Water features are not fenced childcare. Cut grapes lengthways, avoid hard nuts and keep children in sight.',
+    booking:
+      'Confirm actual picnic operation, shade, child access and weather terms; booking required.',
+  },
+  {
+    id: 8,
+    date: '2026-11-06',
+    weekday: 'Friday',
+    title: 'The city beyond the postcard',
+    subtitle: 'Bo-Kaap, District Six and the Waterfront',
+    area: 'Central Cape Town',
+    icon: '🏘️',
+    budget: 'R1,500–2,300',
+    drive: '50–70 min to city each way + local transfers',
+    hero: 'city',
+    events: [
+      {
+        label: 'Morning',
+        text: 'Respectful 15–20-minute Bo-Kaap look around Wale Street. Follow with a short District Six Museum visit if children are comfortable.',
+      },
+      {
+        label: 'Lunch',
+        text: 'Time Out Market at V&A Waterfront around 11:30; arrive ahead of crowds.',
+      },
+      { label: 'Afternoon', text: 'One short Watershed browse or just return for rest.' },
+      { label: 'Dinner', text: 'Resort or pre-booked Foodbarn.' },
+    ],
+    weather:
+      'In rain or if the children need movement, choose Two Oceans Aquarium as the one main activity instead.',
+    toddler:
+      'Alternate adult museum reading; buggy access on Bo-Kaap slopes can be challenging. Hold hands at harbour edges.',
+    booking:
+      'District Six Museum entry historically R65 per adult; confirm dates/children. Treat the aquarium as a substitute, not extra.',
+  },
+  {
+    id: 9,
+    date: '2026-11-07',
+    weekday: 'Saturday',
+    title: 'One estate, a whole landscape',
+    subtitle: 'The optional longer Winelands adventure',
+    area: 'Spier / Stellenbosch',
+    icon: '🍇',
+    budget: 'R2,300–3,300',
+    drive: '75–100 min each way, allow longer with traffic',
+    hero: 'vineyard',
+    events: [
+      {
+        label: 'Morning',
+        text: 'Only go if family energy suits a longer drive. Leave around 08:30 for Spier Elemental Play Garden and a short art walk.',
+      },
+      {
+        label: 'Lunch',
+        text: 'Prebooked Spier family picnic; collect within published midday window.',
+      },
+      {
+        label: 'Afternoon',
+        text: 'Leave around 14:00 for a car nap and a quiet final weekend evening.',
+      },
+      { label: 'Dinner', text: 'Simple early meal near Monkey Valley.' },
+    ],
+    weather:
+      'Skip after a rough night or poor forecast: stay near home with Café Roux or Constantia alternative.',
+    toddler:
+      'Water features and river need close supervision. Some activities have age minimums; hotel pool/kids club are for hotel guests.',
+    booking:
+      'Reference picnic estimate R1,250/family; reserve at least 24h ahead. Driver remains alcohol-free.',
+    alert: 'Optional excursion — an easy local day is equally good.',
+  },
+  {
+    id: 10,
+    date: '2026-11-08',
+    weekday: 'Sunday',
+    title: 'Harbour colours and a tidal-pool morning',
+    subtitle: 'Kalk Bay, St James and a coast full of detail',
+    area: 'Kalk Bay / St James',
+    icon: '🎨',
+    budget: 'R1,000–1,900 (estimate)',
+    drive: '25–35 min to Kalk Bay, extra for St James',
+    hero: 'shore',
+    events: [
+      {
+        label: 'Morning',
+        text: 'Enjoy the colourful bathing huts and beach at St James. Consider the tidal pool only with current lifeguard cover, safe conditions and close adult supervision.',
+      },
+      {
+        label: 'Lunch',
+        text: 'Olympia Café & Bakery for takeaway or a casual café lunch; Harbour House for an optional reserved seafood table.',
+      },
+      {
+        label: 'Afternoon',
+        text: 'Short harbour look from a safe distance; avoid the edge and leave seals undisturbed. Return for a nap.',
+      },
+      { label: 'Dinner', text: 'Simple resort meal.' },
+    ],
+    weather:
+      'Persistent rain or rough sea: keep the outing to a bakery lunch, or enjoy an easy local day.',
+    toddler:
+      'Tidal pools still have slippery rocks, waves and changing water quality. Each non-swimmer needs a designated adult within arm’s reach.',
+    booking:
+      'New editorial day. Verify restaurant Sunday hours and city beach/water-quality alerts. Source: City of Cape Town St James Beach.',
+  },
+  {
+    id: 11,
+    date: '2026-11-09',
+    weekday: 'Monday',
+    title: 'A world beneath the waves',
+    subtitle: 'Aquarium day, with a thoughtful history alternative',
+    area: 'V&A Waterfront',
+    icon: '🐠',
+    budget: 'R1,400–2,500 (estimate)',
+    drive: '50–70 min to Waterfront each way',
+    hero: 'aquarium',
+    events: [
+      {
+        label: 'Morning — family default',
+        text: 'Two Oceans Aquarium is a compact, weather-resilient main attraction. Aim for an early arrival and let the children choose their favourite exhibits.',
+      },
+      { label: 'Lunch', text: 'Easy choice at Time Out Market near the aquarium.' },
+      { label: 'Afternoon', text: 'Very short promenade or return home for rest. Start packing.' },
+      {
+        label: 'Alternative — culture',
+        text: 'Robben Island is an optional adult-focused cultural excursion, not a casual toddler add-on. Official museum tours take about 3.5–4 hours including ferries; conditions may cancel departures. Consider one adult attending while the other accompanies children elsewhere.',
+      },
+    ],
+    weather: 'Rain: aquarium remains suitable. Robben Island ferry sailings are weather-dependent.',
+    toddler:
+      'For the museum excursion, account for long duration, ferry motion, fixed tour format and child needs; do not assume easy exits.',
+    booking:
+      'Aquarium family ticket reference R690 as of 28 Oct. Robben Island Museum peak-season tours: reserve only through official channels and check current terms.',
+    alert: 'Robben Island is optional; suitability for ages 2 and 4 is not guaranteed.',
+  },
+  {
+    id: 12,
+    date: '2026-11-10',
+    weekday: 'Tuesday',
+    title: 'Leave room for one last look',
+    subtitle: 'A gentle departure, not a last-minute race',
+    area: 'Noordhoek / Airport',
+    icon: '✈️',
+    budget: 'R700–1,300',
+    drive: 'Airport: 50–75 min in light traffic; allow 90+ road buffer',
+    hero: 'noordhoek',
+    events: [
+      {
+        label: 'Morning',
+        text: 'Breakfast, final room sweep, check travel documents, flight status, car return, medicine and children’s favourite toys.',
+      },
+      {
+        label: 'Lunch',
+        text: 'Resort or Café Roux only if the confirmed flight schedule makes it easy; otherwise eat at the airport.',
+      },
+      {
+        label: 'Airport',
+        text: 'Allow sufficient international check-in time (guide reference: 3 hours at terminal), plus rental return and child-seat removal.',
+      },
+      {
+        label: 'Evening',
+        text: 'Flight or airport meal. Carry a complete snack kit and spare clothes for each child.',
+      },
+    ],
+    weather: 'Rain, traffic or road incidents: leave earlier and skip extra stops.',
+    toddler:
+      'Keep sleep toys, medicines, documents, wipes and two changes in carry-on. Remove children before unfastening child seats.',
+    booking:
+      'Return date and flight time are PROVISIONAL until verified with actual tickets; comply with current travel documentation rules.',
+  },
 ];
-export const PLACES:Place[]=[
-{id:'monkey',name:'Monkey Valley Resort',category:'Services',area:'Noordhoek',description:'Our leafy home base, with sea views, guest pools and playground access subject to actual operation.',address:'1 Mountain Road, Noordhoek',minutes:'Home base',cost:'Accommodation',note:'Ask staff about baboons, pool barriers, safe beach access and after-hours help.',url:'https://monkeyvalleyresort.com',day:1,symbol:'🏡'},
-{id:'boulders',name:'Boulders / Foxy Beach',category:'Nature',area:"Simon's Town",description:'Protected penguin colony with accessible viewing boardwalks and granite boulders.',address:"Kleintuin Road, Simon's Town",minutes:'35–45 min',cost:'R730 Oct / R840 Nov family (dated)',note:'Stay on boardwalks; do not touch or feed penguins.',url:'https://www.sanparks.org',day:2,symbol:'🐧'},
-{id:'chapmans',name:"Chapman's Peak Drive",category:'Nature',area:'Noordhoek / Hout Bay',description:'Dramatic coastal road with official scenic stopping bays and magnificent cliffs.',address:'M6 between Noordhoek and Hout Bay',minutes:'10–35 min',cost:'Toll; confirm',note:'Check live road status and never stop outside signed pull-offs.',url:'https://www.chapmanspeakdrive.co.za',day:3,symbol:'🏔️'},
-{id:'kirstenbosch',name:'Kirstenbosch Gardens',category:'Nature',area:'Newlands',description:'Botanical gardens below Table Mountain, home to remarkable Cape fynbos.',address:'Rhodes Drive, Newlands',minutes:'35–50 min',cost:'R540 family (dated)',note:'Lower paths good with buggy; canopy walkway is steeper.',url:'https://www.sanbi.org',day:4,symbol:'🌿'},
-{id:'cable',name:'Table Mountain Cableway',category:'Nature',area:'Table Mountain',description:'Cable car to a short summit circuit and a new perspective on Cape Town.',address:'Tafelberg Road, Cape Town',minutes:'50–70 min + queue',cost:'R1,180 online family (dated)',note:'Go first clear operating morning; dress for cold wind.',url:'https://www.tablemountain.net',day:5,symbol:'☁️'},
-{id:'capepoint',name:'Cape Point',category:'Nature',area:'Southern Peninsula',description:'Big headlands, windswept viewpoints and the reserve’s distinctive vegetation.',address:'Cape of Good Hope reserve, M65',minutes:'55–70 min to gate + 20–30 min',cost:'R1,760 family (dated)',note:'Watch for baboons. No lifeguards on reserve beaches.',url:'https://www.capepoint.co.za',day:6,symbol:'🧭'},
-{id:'cpv',name:'Cape Point Vineyards',category:'Wine',area:'Noordhoek',description:'A short trip to a vineyard picnic overlooking the peninsula.',address:'Silvermine Road, Noordhoek',minutes:'10–15 min',cost:'R1,120 picnic/family (dated)',note:'Booking essential. Confirm weather/child rules and water features.',url:'https://cpv.co.za',day:7,symbol:'🍇'},
-{id:'districtsix',name:'District Six Museum',category:'Culture',area:'City Centre',description:'A poignant encounter with Cape Town’s forced-removal history.',address:'25A Buitenkant Street, Cape Town',minutes:'50–70 min',cost:'R65/adult (dated)',note:'Keep a visit short with young children; confirm admission.',url:'https://www.districtsix.co.za',day:8,symbol:'🏛️'},
-{id:'bokap',name:'Bo-Kaap / Wale Street',category:'Culture',area:'City Centre',description:'Vivid streets, living culture and an important Cape Muslim neighbourhood.',address:'Wale Street, Bo-Kaap, Cape Town',minutes:'50–70 min',cost:'Free to explore streets',note:'Respect residents, prayer and private doorways.',day:8,symbol:'🏘️'},
-{id:'spier',name:'Spier Wine Farm',category:'Wine',area:'Stellenbosch',description:'An optional longer outing for art, a play garden and a family picnic.',address:'R310 Baden Powell Drive, Stellenbosch',minutes:'75–100 min',cost:'R1,250 picnic/family (dated)',note:'Hotel pool/club for overnight guests; watch water features.',url:'https://www.spier.co.za',day:9,symbol:'🍇'},
-{id:'stjames',name:'St James Beach',category:'Nature',area:'St James',description:'Colourful Victorian bathing boxes and a famous sheltered tidal pool.',address:'Main Road, St James',minutes:'25–40 min',cost:'Free beach access',note:'Lifeguard-only swim; check water-quality notices and slippery edges.',url:'https://www.capetown.gov.za',day:10,symbol:'🏖️'},
-{id:'kalk',name:'Kalk Bay Harbour',category:'Nature',area:'Kalk Bay',description:'Fishing harbour, bakery, boats and dramatic coastline.',address:'Kalk Bay Harbour, Main Road',minutes:'25–35 min',cost:'Free to look',note:'Keep away from harbour edges and seals.',day:10,symbol:'⛵'},
-{id:'aquarium',name:'Two Oceans Aquarium',category:'Family',area:'V&A Waterfront',description:'Rain-proof marine discovery for a curious four-year-old and toddler.',address:'Dock Road, V&A Waterfront',minutes:'50–70 min',cost:'R690 family (dated)',note:'Start early and use it as the one main outing.',url:'https://www.aquarium.co.za',day:11,symbol:'🐠'},
-{id:'robben',name:'Robben Island Museum',category:'Culture',area:'Waterfront / island',description:'Important South African historical site reached by a weather-dependent ferry and guided tour.',address:'Nelson Mandela Gateway, V&A Waterfront',minutes:'3.5–4h tour plus travel to port',cost:'Confirm official booking',note:'Consider an adult-only excursion; long fixed schedule is difficult for toddlers.',url:'https://www.robben-island.org.za',day:11,symbol:'⛴️'},
-{id:'caferoux',name:'Café Roux',category:'Food',area:'Noordhoek',description:'Reliable relaxed family lunch beside Noordhoek Farm Village play area.',address:'Noordhoek Farm Village, Village Lane',minutes:'5–10 min',cost:'R550–800 family estimate',note:'Book weekend lunch; dinner only on selected event nights.',url:'https://www.caferoux.co.za',symbol:'☕'},
-{id:'foodbarn',name:'The Foodbarn',category:'Food',area:'Noordhoek',description:'Seasonal bistro, tapas and the easy Deli option.',address:'Farm Village, Noordhoek Main Road',minutes:'5–10 min',cost:'R900–1,400 family estimate',note:'Deli a flexible option; check dinner days.',url:'https://www.thefoodbarn.co.za',symbol:'🍽️'},
-{id:'thorfynns',name:'Thorfynns',category:'Food',area:'Noordhoek',description:'On-site convenience for an early dinner after adventures.',address:'Monkey Valley Resort, 1 Mountain Road',minutes:'On site',cost:'R600–900 family estimate',note:'Confirm kitchen hours with reception.',symbol:'🍽️'},
-{id:'berthas',name:"Bertha's",category:'Food',area:"Simon's Town",description:'Harbour views after the penguin visit.',address:"Quayside Centre, 1 Wharf Road, Simon's Town",minutes:'30–40 min',cost:'R650–1,000 family estimate',note:'Confirm kids seating and play area.',url:'https://berthas.co.za',symbol:'🐟'},
-{id:'dunes',name:'Dunes',category:'Food',area:'Hout Bay',description:'Beachfront meal with a playground beside the terrace.',address:'1 Beach Crescent, Hout Bay',minutes:'25–35 min',cost:'R650–1,000 family estimate',note:'Request a table overlooking the playground.',url:'https://www.dunesrestaurant.co.za',symbol:'🍟'},
-{id:'jonkershuis',name:'Jonkershuis',category:'Food',area:'Constantia',description:'Cape Malay cooking and family lawns on the Groot Constantia estate.',address:'Groot Constantia Road, Constantia',minutes:'30–40 min',cost:'R800–1,200 family estimate',note:'Book lawn-side; choose a sober driver for vineyard days.',url:'https://jonkershuisconstantia.co.za',symbol:'🍛'},
-{id:'olympia',name:'Olympia Café & Bakery',category:'Food',area:'Kalk Bay',description:'A characterful bakery and casual café near the harbour.',address:'134 Main Road, Kalk Bay',minutes:'25–35 min',cost:'R350–950 depending on takeaway/seated',note:'No reservations, verify Sunday hours.',url:'https://olympiacafe.co.za',day:10,symbol:'🥐'},
-{id:'harbourhouse',name:'Harbour House',category:'Food',area:'Kalk Bay',description:'Sea-facing seafood lunch; more of a seated occasion.',address:'Kalk Bay Harbour, Main Road',minutes:'25–35 min',cost:'R1,200–1,800 family estimate',note:'Steps/harbour edges; book an accessible lunch table.',url:'https://www.harbourhouse.co.za',symbol:'🐟'},
-{id:'market',name:'Time Out Market',category:'Food',area:'V&A Waterfront',description:'Multiple kitchens and indoor seating by the harbour.',address:'Old Power Station, Dock Road',minutes:'50–70 min',cost:'R650–1,000 family estimate',note:'Arrive before peak lunch and use a fixed meeting point.',url:'https://www.timeout.com',symbol:'🍲'},
-{id:'hospital1',name:'False Bay Hospital',category:'Services',area:'Fish Hoek',description:'Public hospital, listed as 24-hour facility in the guide.',address:'17th Avenue, Fish Hoek',minutes:'20–30 min estimate',cost:'Call for care',note:'Phone +27 21 782 1121. In a serious emergency call 112.',symbol:'🏥'},
-{id:'hospital2',name:'Melomed Tokai',category:'Services',area:'Tokai',description:'Private 24-hour hospital noted in the field guide.',address:'Corner Main and Keysers Roads, Tokai',minutes:'25–40 min estimate',cost:'Call for care',note:'Phone +27 21 764 7500. In a serious emergency call 112.',symbol:'🏥'},
-{id:'hospital3',name:'Mediclinic Constantiaberg',category:'Services',area:'Plumstead',description:'Private hospital with emergency department.',address:'Burnham Road, Plumstead',minutes:'35–50 min estimate',cost:'Call for care',note:'Emergency department +27 21 799 2547. In a serious emergency call 112.',symbol:'🏥'}
+export const PLACES: Place[] = [
+  {
+    id: 'monkey',
+    name: 'Monkey Valley Resort',
+    category: 'Services',
+    area: 'Noordhoek',
+    description:
+      'Our leafy home base, with sea views, guest pools and playground access subject to actual operation.',
+    address: '1 Mountain Road, Noordhoek',
+    minutes: 'Home base',
+    cost: 'Accommodation',
+    note: 'Ask staff about baboons, pool barriers, safe beach access and after-hours help.',
+    url: 'https://monkeyvalleyresort.com',
+    day: 1,
+    symbol: '🏡',
+  },
+  {
+    id: 'boulders',
+    name: 'Boulders / Foxy Beach',
+    category: 'Nature',
+    area: "Simon's Town",
+    description:
+      'Protected penguin colony with accessible viewing boardwalks and granite boulders.',
+    address: "Kleintuin Road, Simon's Town",
+    minutes: '35–45 min',
+    cost: 'R730 Oct / R840 Nov family (dated)',
+    note: 'Stay on boardwalks; do not touch or feed penguins.',
+    url: 'https://www.sanparks.org',
+    day: 2,
+    symbol: '🐧',
+  },
+  {
+    id: 'chapmans',
+    name: "Chapman's Peak Drive",
+    category: 'Nature',
+    area: 'Noordhoek / Hout Bay',
+    description: 'Dramatic coastal road with official scenic stopping bays and magnificent cliffs.',
+    address: 'M6 between Noordhoek and Hout Bay',
+    minutes: '10–35 min',
+    cost: 'Toll; confirm',
+    note: 'Check live road status and never stop outside signed pull-offs.',
+    url: 'https://www.chapmanspeakdrive.co.za',
+    day: 3,
+    symbol: '🏔️',
+  },
+  {
+    id: 'kirstenbosch',
+    name: 'Kirstenbosch Gardens',
+    category: 'Nature',
+    area: 'Newlands',
+    description: 'Botanical gardens below Table Mountain, home to remarkable Cape fynbos.',
+    address: 'Rhodes Drive, Newlands',
+    minutes: '35–50 min',
+    cost: 'R540 family (dated)',
+    note: 'Lower paths good with buggy; canopy walkway is steeper.',
+    url: 'https://www.sanbi.org',
+    day: 4,
+    symbol: '🌿',
+  },
+  {
+    id: 'cable',
+    name: 'Table Mountain Cableway',
+    category: 'Nature',
+    area: 'Table Mountain',
+    description: 'Cable car to a short summit circuit and a new perspective on Cape Town.',
+    address: 'Tafelberg Road, Cape Town',
+    minutes: '50–70 min + queue',
+    cost: 'R1,180 online family (dated)',
+    note: 'Go first clear operating morning; dress for cold wind.',
+    url: 'https://www.tablemountain.net',
+    day: 5,
+    symbol: '☁️',
+  },
+  {
+    id: 'capepoint',
+    name: 'Cape Point',
+    category: 'Nature',
+    area: 'Southern Peninsula',
+    description: 'Big headlands, windswept viewpoints and the reserve’s distinctive vegetation.',
+    address: 'Cape of Good Hope reserve, M65',
+    minutes: '55–70 min to gate + 20–30 min',
+    cost: 'R1,760 family (dated)',
+    note: 'Watch for baboons. No lifeguards on reserve beaches.',
+    url: 'https://www.capepoint.co.za',
+    day: 6,
+    symbol: '🧭',
+  },
+  {
+    id: 'cpv',
+    name: 'Cape Point Vineyards',
+    category: 'Wine',
+    area: 'Noordhoek',
+    description: 'A short trip to a vineyard picnic overlooking the peninsula.',
+    address: 'Silvermine Road, Noordhoek',
+    minutes: '10–15 min',
+    cost: 'R1,120 picnic/family (dated)',
+    note: 'Booking essential. Confirm weather/child rules and water features.',
+    url: 'https://cpv.co.za',
+    day: 7,
+    symbol: '🍇',
+  },
+  {
+    id: 'districtsix',
+    name: 'District Six Museum',
+    category: 'Culture',
+    area: 'City Centre',
+    description: 'A poignant encounter with Cape Town’s forced-removal history.',
+    address: '25A Buitenkant Street, Cape Town',
+    minutes: '50–70 min',
+    cost: 'R65/adult (dated)',
+    note: 'Keep a visit short with young children; confirm admission.',
+    url: 'https://www.districtsix.co.za',
+    day: 8,
+    symbol: '🏛️',
+  },
+  {
+    id: 'bokap',
+    name: 'Bo-Kaap / Wale Street',
+    category: 'Culture',
+    area: 'City Centre',
+    description: 'Vivid streets, living culture and an important Cape Muslim neighbourhood.',
+    address: 'Wale Street, Bo-Kaap, Cape Town',
+    minutes: '50–70 min',
+    cost: 'Free to explore streets',
+    note: 'Respect residents, prayer and private doorways.',
+    day: 8,
+    symbol: '🏘️',
+  },
+  {
+    id: 'spier',
+    name: 'Spier Wine Farm',
+    category: 'Wine',
+    area: 'Stellenbosch',
+    description: 'An optional longer outing for art, a play garden and a family picnic.',
+    address: 'R310 Baden Powell Drive, Stellenbosch',
+    minutes: '75–100 min',
+    cost: 'R1,250 picnic/family (dated)',
+    note: 'Hotel pool/club for overnight guests; watch water features.',
+    url: 'https://www.spier.co.za',
+    day: 9,
+    symbol: '🍇',
+  },
+  {
+    id: 'stjames',
+    name: 'St James Beach',
+    category: 'Nature',
+    area: 'St James',
+    description: 'Colourful Victorian bathing boxes and a famous sheltered tidal pool.',
+    address: 'Main Road, St James',
+    minutes: '25–40 min',
+    cost: 'Free beach access',
+    note: 'Lifeguard-only swim; check water-quality notices and slippery edges.',
+    url: 'https://www.capetown.gov.za',
+    day: 10,
+    symbol: '🏖️',
+  },
+  {
+    id: 'kalk',
+    name: 'Kalk Bay Harbour',
+    category: 'Nature',
+    area: 'Kalk Bay',
+    description: 'Fishing harbour, bakery, boats and dramatic coastline.',
+    address: 'Kalk Bay Harbour, Main Road',
+    minutes: '25–35 min',
+    cost: 'Free to look',
+    note: 'Keep away from harbour edges and seals.',
+    day: 10,
+    symbol: '⛵',
+  },
+  {
+    id: 'aquarium',
+    name: 'Two Oceans Aquarium',
+    category: 'Family',
+    area: 'V&A Waterfront',
+    description: 'Rain-proof marine discovery for a curious four-year-old and toddler.',
+    address: 'Dock Road, V&A Waterfront',
+    minutes: '50–70 min',
+    cost: 'R690 family (dated)',
+    note: 'Start early and use it as the one main outing.',
+    url: 'https://www.aquarium.co.za',
+    day: 11,
+    symbol: '🐠',
+  },
+  {
+    id: 'robben',
+    name: 'Robben Island Museum',
+    category: 'Culture',
+    area: 'Waterfront / island',
+    description:
+      'Important South African historical site reached by a weather-dependent ferry and guided tour.',
+    address: 'Nelson Mandela Gateway, V&A Waterfront',
+    minutes: '3.5–4h tour plus travel to port',
+    cost: 'Confirm official booking',
+    note: 'Consider an adult-only excursion; long fixed schedule is difficult for toddlers.',
+    url: 'https://www.robben-island.org.za',
+    day: 11,
+    symbol: '⛴️',
+  },
+  {
+    id: 'caferoux',
+    name: 'Café Roux',
+    category: 'Food',
+    area: 'Noordhoek',
+    description: 'Reliable relaxed family lunch beside Noordhoek Farm Village play area.',
+    address: 'Noordhoek Farm Village, Village Lane',
+    minutes: '5–10 min',
+    cost: 'R550–800 family estimate',
+    note: 'Book weekend lunch; dinner only on selected event nights.',
+    url: 'https://www.caferoux.co.za',
+    symbol: '☕',
+  },
+  {
+    id: 'foodbarn',
+    name: 'The Foodbarn',
+    category: 'Food',
+    area: 'Noordhoek',
+    description: 'Seasonal bistro, tapas and the easy Deli option.',
+    address: 'Farm Village, Noordhoek Main Road',
+    minutes: '5–10 min',
+    cost: 'R900–1,400 family estimate',
+    note: 'Deli a flexible option; check dinner days.',
+    url: 'https://www.thefoodbarn.co.za',
+    symbol: '🍽️',
+  },
+  {
+    id: 'thorfynns',
+    name: 'Thorfynns',
+    category: 'Food',
+    area: 'Noordhoek',
+    description: 'On-site convenience for an early dinner after adventures.',
+    address: 'Monkey Valley Resort, 1 Mountain Road',
+    minutes: 'On site',
+    cost: 'R600–900 family estimate',
+    note: 'Confirm kitchen hours with reception.',
+    symbol: '🍽️',
+  },
+  {
+    id: 'berthas',
+    name: "Bertha's",
+    category: 'Food',
+    area: "Simon's Town",
+    description: 'Harbour views after the penguin visit.',
+    address: "Quayside Centre, 1 Wharf Road, Simon's Town",
+    minutes: '30–40 min',
+    cost: 'R650–1,000 family estimate',
+    note: 'Confirm kids seating and play area.',
+    url: 'https://berthas.co.za',
+    symbol: '🐟',
+  },
+  {
+    id: 'dunes',
+    name: 'Dunes',
+    category: 'Food',
+    area: 'Hout Bay',
+    description: 'Beachfront meal with a playground beside the terrace.',
+    address: '1 Beach Crescent, Hout Bay',
+    minutes: '25–35 min',
+    cost: 'R650–1,000 family estimate',
+    note: 'Request a table overlooking the playground.',
+    url: 'https://www.dunesrestaurant.co.za',
+    symbol: '🍟',
+  },
+  {
+    id: 'jonkershuis',
+    name: 'Jonkershuis',
+    category: 'Food',
+    area: 'Constantia',
+    description: 'Cape Malay cooking and family lawns on the Groot Constantia estate.',
+    address: 'Groot Constantia Road, Constantia',
+    minutes: '30–40 min',
+    cost: 'R800–1,200 family estimate',
+    note: 'Book lawn-side; choose a sober driver for vineyard days.',
+    url: 'https://jonkershuisconstantia.co.za',
+    symbol: '🍛',
+  },
+  {
+    id: 'olympia',
+    name: 'Olympia Café & Bakery',
+    category: 'Food',
+    area: 'Kalk Bay',
+    description: 'A characterful bakery and casual café near the harbour.',
+    address: '134 Main Road, Kalk Bay',
+    minutes: '25–35 min',
+    cost: 'R350–950 depending on takeaway/seated',
+    note: 'No reservations, verify Sunday hours.',
+    url: 'https://olympiacafe.co.za',
+    day: 10,
+    symbol: '🥐',
+  },
+  {
+    id: 'harbourhouse',
+    name: 'Harbour House',
+    category: 'Food',
+    area: 'Kalk Bay',
+    description: 'Sea-facing seafood lunch; more of a seated occasion.',
+    address: 'Kalk Bay Harbour, Main Road',
+    minutes: '25–35 min',
+    cost: 'R1,200–1,800 family estimate',
+    note: 'Steps/harbour edges; book an accessible lunch table.',
+    url: 'https://www.harbourhouse.co.za',
+    symbol: '🐟',
+  },
+  {
+    id: 'market',
+    name: 'Time Out Market',
+    category: 'Food',
+    area: 'V&A Waterfront',
+    description: 'Multiple kitchens and indoor seating by the harbour.',
+    address: 'Old Power Station, Dock Road',
+    minutes: '50–70 min',
+    cost: 'R650–1,000 family estimate',
+    note: 'Arrive before peak lunch and use a fixed meeting point.',
+    url: 'https://www.timeout.com',
+    symbol: '🍲',
+  },
+  {
+    id: 'hospital1',
+    name: 'False Bay Hospital',
+    category: 'Services',
+    area: 'Fish Hoek',
+    description: 'Public hospital, listed as 24-hour facility in the guide.',
+    address: '17th Avenue, Fish Hoek',
+    minutes: '20–30 min estimate',
+    cost: 'Call for care',
+    note: 'Phone +27 21 782 1121. In a serious emergency call 112.',
+    symbol: '🏥',
+  },
+  {
+    id: 'hospital2',
+    name: 'Melomed Tokai',
+    category: 'Services',
+    area: 'Tokai',
+    description: 'Private 24-hour hospital noted in the field guide.',
+    address: 'Corner Main and Keysers Roads, Tokai',
+    minutes: '25–40 min estimate',
+    cost: 'Call for care',
+    note: 'Phone +27 21 764 7500. In a serious emergency call 112.',
+    symbol: '🏥',
+  },
+  {
+    id: 'hospital3',
+    name: 'Mediclinic Constantiaberg',
+    category: 'Services',
+    area: 'Plumstead',
+    description: 'Private hospital with emergency department.',
+    address: 'Burnham Road, Plumstead',
+    minutes: '35–50 min estimate',
+    cost: 'Call for care',
+    note: 'Emergency department +27 21 799 2547. In a serious emergency call 112.',
+    symbol: '🏥',
+  },
 ];
-export const HAZARDS:Hazard[]=[
-{name:'Cape cobra',latin:'Naja nivea',group:'Snakes',level:'Emergency if exposed',recognition:'A highly venomous regional snake. Colour varies; do not use a picture to decide whether it is safe.',prevention:'Stay on paths, wear closed shoes, never reach into holes, grass or rock piles.',response:'Back away without approaching. Suspected bite: call 112, keep the child still and arrange urgent hospital care; no cutting, sucking, ice or tourniquet.',source:'African Snakebite Institute; City of Cape Town'},
-{name:'Puff adder',latin:'Bitis arietans',group:'Snakes',level:'Emergency if exposed',recognition:'Stocky, often well-camouflaged snake; may remain motionless where people walk.',prevention:'Watch foot placement; do not handle or step over snakes.',response:'Keep distance. After suspected bite call 112 and obtain urgent medical care. Immobilize gently; do not improvise pressure bandaging.',source:'African Snakebite Institute'},
-{name:'Boomslang',latin:'Dispholidus typus',group:'Snakes',level:'Emergency if exposed',recognition:'Often arboreal; size, colour and eye appearance alone are not safe identification methods.',prevention:'No climbing into foliage or trying to catch or photograph a snake up close.',response:'Call 112 for any suspected bite even if initially painless; symptoms may be delayed. Seek specialist care.',source:'African Snakebite Institute'},
-{name:'Button / widow spiders',latin:'Latrodectus spp.',group:'Spiders',level:'Serious',recognition:'Button spiders vary; do not rely on simple visual rules. Serious spider bites are uncommon.',prevention:'Shake shoes and outdoor clothes. Do not put hands inside wood piles or under stored items.',response:'If severe pain, systemic symptoms or a child is unwell, get urgent medical advice. Do not handle the spider.',source:'City of Cape Town spider safety'},
-{name:'Violin spiders',latin:'Loxosceles spp.',group:'Spiders',level:'Caution',recognition:'Photos cannot reliably identify a bite or culprit spider; many skin lesions have other causes.',prevention:'Check clothing and avoid handling hidden spiders.',response:'Wash gently and seek medical review for worsening pain, ulceration or illness. Avoid home remedies.',source:'City of Cape Town spider safety'},
-{name:'Rain spiders',group:'Spiders',level:'Caution',recognition:'Large, fast-moving huntsman spiders can look alarming but are not among the primary medically important spiders in the region.',prevention:'Do not handle spiders; ask resort staff to move one safely if necessary.',response:'For bites with severe pain or unusual symptoms in a child, contact a medical professional. Do not attempt species identification by catching a spider.',source:'African Snakebite Institute; updated field guide pp.39–40'},
-{name:'Scorpions',group:'Scorpions',level:'Serious',recognition:'May shelter under stones, in shoes or wood; do not attempt to identify risk by colour.',prevention:'Shake shoes, keep floors clear, use a torch on dark paths and do not overturn rocks.',response:'Any scorpion sting in a small child warrants urgent poison-centre or medical advice; call 112 for severe symptoms.',source:'UCT Poisons Information Centre; City of Cape Town'},
-{name:'Chacma baboons',latin:'Papio ursinus',group:'Mammals',level:'Serious',recognition:'Wild primates may seek accessible food around the peninsula and accommodation.',prevention:'Hide all food, secure rubbish, lock vehicle doors and close windows. Never feed.',response:'Move children away calmly. Do not chase, corner or retrieve stolen items; alert staff if an animal enters a building.',source:'City of Cape Town baboon guidance'},
-{name:'Cape fur seals',latin:'Arctocephalus pusillus',group:'Marine life',level:'Serious',recognition:'Wild seals, including pups, can bite; rabies has been reported on the coast.',prevention:'Keep a wide distance and never touch or feed.',response:'Any mammal bite/scratch or saliva exposure to broken skin or mucosa: wash for 15 minutes with running water and soap, then seek urgent rabies assessment.',source:'CapeNature 28 September 2026'},
-{name:'Bluebottles',latin:'Physalia species',group:'Marine life',level:'Caution',recognition:'Blue floating bladders and long trailing tentacles can still sting when stranded.',prevention:'Do not touch floats or tentacles. Teach children to leave stranded creatures alone.',response:'For a known bluebottle sting, leave water, rinse with seawater, avoid bare-handed tentacle handling and seek appropriate first aid/medical advice. Call 112 for severe reaction.',source:'Healthdirect bluebottle guidance'},
-{name:'Oleander / irritating sap',group:'Plants',level:'Serious',recognition:'Ornamental oleander and some euphorbia saps can be harmful; not an inventory of resort plants.',prevention:'No tasting or collecting berries, mushrooms, seeds or plants. Keep small children from sap.',response:'Suspected ingestion: remove visible pieces, do not induce vomiting; call Poisons 0861 555 777. Flush affected eyes with running water.',source:'UCT Poisons Information Centre; Royal Horticultural Society'},
-{name:'Rip currents and cold surf',group:'Water',level:'Serious',recognition:'Noordhoek is exposed surf. Calm-looking tidal pools are not automatically free of risk.',prevention:'Choose lifeguarded beaches, swim only between flags and stay within arm’s reach of each non-swimmer.',response:'If caught, float, signal, then move sideways only if able. If another person is in difficulty call 112/NSRI; never attempt an untrained rescue.',source:'National Sea Rescue Institute'}
+export const HAZARDS: Hazard[] = [
+  {
+    name: 'Cape cobra',
+    latin: 'Naja nivea',
+    group: 'Snakes',
+    level: 'Emergency if exposed',
+    recognition:
+      'A highly venomous regional snake. Colour varies; do not use a picture to decide whether it is safe.',
+    prevention: 'Stay on paths, wear closed shoes, never reach into holes, grass or rock piles.',
+    response:
+      'Back away without approaching. Suspected bite: call 112, keep the child still and arrange urgent hospital care; no cutting, sucking, ice or tourniquet.',
+    source: 'African Snakebite Institute; City of Cape Town',
+  },
+  {
+    name: 'Puff adder',
+    latin: 'Bitis arietans',
+    group: 'Snakes',
+    level: 'Emergency if exposed',
+    recognition: 'Stocky, often well-camouflaged snake; may remain motionless where people walk.',
+    prevention: 'Watch foot placement; do not handle or step over snakes.',
+    response:
+      'Keep distance. After suspected bite call 112 and obtain urgent medical care. Immobilize gently; do not improvise pressure bandaging.',
+    source: 'African Snakebite Institute',
+  },
+  {
+    name: 'Boomslang',
+    latin: 'Dispholidus typus',
+    group: 'Snakes',
+    level: 'Emergency if exposed',
+    recognition:
+      'Often arboreal; size, colour and eye appearance alone are not safe identification methods.',
+    prevention: 'No climbing into foliage or trying to catch or photograph a snake up close.',
+    response:
+      'Call 112 for any suspected bite even if initially painless; symptoms may be delayed. Seek specialist care.',
+    source: 'African Snakebite Institute',
+  },
+  {
+    name: 'Button / widow spiders',
+    latin: 'Latrodectus spp.',
+    group: 'Spiders',
+    level: 'Serious',
+    recognition:
+      'Button spiders vary; do not rely on simple visual rules. Serious spider bites are uncommon.',
+    prevention:
+      'Shake shoes and outdoor clothes. Do not put hands inside wood piles or under stored items.',
+    response:
+      'If severe pain, systemic symptoms or a child is unwell, get urgent medical advice. Do not handle the spider.',
+    source: 'City of Cape Town spider safety',
+  },
+  {
+    name: 'Violin spiders',
+    latin: 'Loxosceles spp.',
+    group: 'Spiders',
+    level: 'Caution',
+    recognition:
+      'Photos cannot reliably identify a bite or culprit spider; many skin lesions have other causes.',
+    prevention: 'Check clothing and avoid handling hidden spiders.',
+    response:
+      'Wash gently and seek medical review for worsening pain, ulceration or illness. Avoid home remedies.',
+    source: 'City of Cape Town spider safety',
+  },
+  {
+    name: 'Rain spiders',
+    group: 'Spiders',
+    level: 'Caution',
+    recognition:
+      'Large, fast-moving huntsman spiders can look alarming but are not among the primary medically important spiders in the region.',
+    prevention: 'Do not handle spiders; ask resort staff to move one safely if necessary.',
+    response:
+      'For bites with severe pain or unusual symptoms in a child, contact a medical professional. Do not attempt species identification by catching a spider.',
+    source: 'African Snakebite Institute; updated field guide pp. 39–40',
+  },
+  {
+    name: 'Scorpions',
+    group: 'Scorpions',
+    level: 'Serious',
+    recognition:
+      'May shelter under stones, in shoes or wood; do not attempt to identify risk by colour.',
+    prevention:
+      'Shake shoes, keep floors clear, use a torch on dark paths and do not overturn rocks.',
+    response:
+      'Any scorpion sting in a small child warrants urgent poison-centre or medical advice; call 112 for severe symptoms.',
+    source: 'UCT Poisons Information Centre; City of Cape Town',
+  },
+  {
+    name: 'Chacma baboons',
+    latin: 'Papio ursinus',
+    group: 'Mammals',
+    level: 'Serious',
+    recognition: 'Wild primates may seek accessible food around the peninsula and accommodation.',
+    prevention: 'Hide all food, secure rubbish, lock vehicle doors and close windows. Never feed.',
+    response:
+      'Move children away calmly. Do not chase, corner or retrieve stolen items; alert staff if an animal enters a building.',
+    source: 'City of Cape Town baboon guidance',
+  },
+  {
+    name: 'Cape fur seals',
+    latin: 'Arctocephalus pusillus',
+    group: 'Marine life',
+    level: 'Serious',
+    recognition: 'Wild seals, including pups, can bite; rabies has been reported on the coast.',
+    prevention: 'Keep a wide distance and never touch or feed.',
+    response:
+      'Any mammal bite/scratch or saliva exposure to broken skin or mucosa: wash for 15 minutes with running water and soap, then seek urgent rabies assessment.',
+    source: 'CapeNature 28 September 2026',
+  },
+  {
+    name: 'Bluebottles',
+    latin: 'Physalia species',
+    group: 'Marine life',
+    level: 'Caution',
+    recognition:
+      'Blue floating bladders and long trailing tentacles can still sting when stranded.',
+    prevention:
+      'Do not touch floats or tentacles. Teach children to leave stranded creatures alone.',
+    response:
+      'For a known bluebottle sting, leave water, rinse with seawater, avoid bare-handed tentacle handling and seek appropriate first aid/medical advice. Call 112 for severe reaction.',
+    source: 'Healthdirect bluebottle guidance',
+  },
+  {
+    name: 'Oleander / irritating sap',
+    group: 'Plants',
+    level: 'Serious',
+    recognition:
+      'Ornamental oleander and some euphorbia saps can be harmful; not an inventory of resort plants.',
+    prevention:
+      'No tasting or collecting berries, mushrooms, seeds or plants. Keep small children from sap.',
+    response:
+      'Suspected ingestion: remove visible pieces, do not induce vomiting; call Poisons 0861 555 777. Flush affected eyes with running water.',
+    source: 'UCT Poisons Information Centre; Royal Horticultural Society',
+  },
+  {
+    name: 'Rip currents and cold surf',
+    group: 'Water',
+    level: 'Serious',
+    recognition:
+      'Noordhoek is exposed surf. Calm-looking tidal pools are not automatically free of risk.',
+    prevention:
+      'Choose lifeguarded beaches, swim only between flags and stay within arm’s reach of each non-swimmer.',
+    response:
+      'If caught, float, signal, then move sideways only if able. If another person is in difficulty call 112/NSRI; never attempt an untrained rescue.',
+    source: 'National Sea Rescue Institute',
+  },
 ];
-export const EMERGENCY=[
-{label:'Mobile emergency',number:'112',kind:'Emergency',description:'Police, ambulance or other urgent help from a mobile'},
-{label:'Ambulance',number:'10177',kind:'Emergency',description:'Medical emergency dispatch'},
-{label:'Police',number:'10111',kind:'Emergency',description:'South African Police Service'},
-{label:'Cape Town emergency',number:'+27 21 480 7700',kind:'Emergency',description:'Cape Town municipal emergency service'},
-{label:'Poisons advice (24h)',number:'0861 555 777',kind:'Medical',description:'UCT Poisons Information Centre'},
-{label:'NSRI sea rescue',number:'+27 87 094 9774',kind:'Rescue',description:'National Sea Rescue Institute'},
-{label:'Wilderness rescue',number:'+27 21 937 0300',kind:'Rescue',description:'Wilderness Search and Rescue'},
-{label:'Monkey Valley Resort',number:'+27 21 789 1391',kind:'Local',description:'1 Mountain Road, Noordhoek'},
-{label:'False Bay Hospital',number:'+27 21 782 1121',kind:'Medical',description:'17th Avenue, Fish Hoek'},
-{label:'Melomed Tokai',number:'+27 21 764 7500',kind:'Medical',description:'Main and Keysers Roads, Tokai'},
-{label:'Mediclinic Emergency',number:'+27 21 799 2547',kind:'Medical',description:'Burnham Road, Plumstead'}];
-export const PACKING=[
-'All four passports; check visa and child-document rules','Insurance assistance number and travel documents saved offline','Two correct child seats fitted and checked','Water bottles, snacks, nappies and wipes','Sunhats, SPF50 and light wind/rain layers','Closed shoes, buggy and child carrier','Prescriptions, medicines, first-aid and rehydration supplies','Power bank, Type M travel adapter and torch','Check weather, Cableway and road status','Confirm today’s booking and backup plan','Assign a water watcher for each non-swimmer','Save emergency contacts and offline maps'];
-export const OFFICIAL_LINKS=[
-{name:'Robben Island Museum',url:'https://www.robben-island.org.za/tour-types/'},
-{name:'City of Cape Town — St James',url:'https://www.capetown.gov.za/family-and-home/see-all-city-facilities/our-recreational-facilities/beaches/st-james-beach/'},
-{name:'Cape Town beach water quality',url:'https://beachalerts.capetown.gov.za/beaches'},
-{name:'Table Mountain Cableway',url:'https://www.tablemountain.net'},
-{name:"Chapman's Peak road status",url:'https://www.chapmanspeakdrive.co.za'},
-{name:'SANParks',url:'https://www.sanparks.org'},
-{name:'NSRI',url:'https://www.nsri.org.za'},
-{name:'South African Weather Service',url:'https://www.weathersa.co.za'},
-{name:'UCT Poisons Information Centre',url:'https://health.uct.ac.za/'}];
+export const EMERGENCY = [
+  {
+    label: 'Mobile emergency',
+    number: '112',
+    kind: 'Emergency',
+    description: 'Police, ambulance or other urgent help from a mobile',
+  },
+  {
+    label: 'Ambulance',
+    number: '10177',
+    kind: 'Emergency',
+    description: 'Medical emergency dispatch',
+  },
+  {
+    label: 'Police',
+    number: '10111',
+    kind: 'Emergency',
+    description: 'South African Police Service',
+  },
+  {
+    label: 'Cape Town emergency',
+    number: '+27 21 480 7700',
+    kind: 'Emergency',
+    description: 'Cape Town municipal emergency service',
+  },
+  {
+    label: 'Poisons advice (24h)',
+    number: '0861 555 777',
+    kind: 'Medical',
+    description: 'UCT Poisons Information Centre',
+  },
+  {
+    label: 'NSRI sea rescue',
+    number: '+27 87 094 9774',
+    kind: 'Rescue',
+    description: 'National Sea Rescue Institute',
+  },
+  {
+    label: 'Wilderness rescue',
+    number: '+27 21 937 0300',
+    kind: 'Rescue',
+    description: 'Wilderness Search and Rescue',
+  },
+  {
+    label: 'Monkey Valley Resort',
+    number: '+27 21 789 1391',
+    kind: 'Local',
+    description: '1 Mountain Road, Noordhoek',
+  },
+  {
+    label: 'False Bay Hospital',
+    number: '+27 21 782 1121',
+    kind: 'Medical',
+    description: '17th Avenue, Fish Hoek',
+  },
+  {
+    label: 'Melomed Tokai',
+    number: '+27 21 764 7500',
+    kind: 'Medical',
+    description: 'Main and Keysers Roads, Tokai',
+  },
+  {
+    label: 'Mediclinic Emergency',
+    number: '+27 21 799 2547',
+    kind: 'Medical',
+    description: 'Burnham Road, Plumstead',
+  },
+];
+export const PACKING = [
+  'All four passports; check visa and child-document rules',
+  'Insurance assistance number and travel documents saved offline',
+  'Two correct child seats fitted and checked',
+  'Water bottles, snacks, nappies and wipes',
+  'Sunhats, SPF50 and light wind/rain layers',
+  'Closed shoes, buggy and child carrier',
+  'Prescriptions, medicines, first-aid and rehydration supplies',
+  'Power bank, Type M travel adapter and torch',
+  'Check weather, Cableway and road status',
+  'Confirm today’s booking and backup plan',
+  'Assign a water watcher for each non-swimmer',
+  'Save emergency contacts and offline maps',
+];
+export const OFFICIAL_LINKS = [
+  { name: 'Robben Island Museum', url: 'https://www.robben-island.org.za/tour-types/' },
+  {
+    name: 'City of Cape Town — St James',
+    url: 'https://www.capetown.gov.za/family-and-home/see-all-city-facilities/our-recreational-facilities/beaches/st-james-beach/',
+  },
+  { name: 'Cape Town beach water quality', url: 'https://beachalerts.capetown.gov.za/beaches' },
+  { name: 'Table Mountain Cableway', url: 'https://www.tablemountain.net' },
+  { name: "Chapman's Peak road status", url: 'https://www.chapmanspeakdrive.co.za' },
+  { name: 'SANParks', url: 'https://www.sanparks.org' },
+  { name: 'NSRI', url: 'https://www.nsri.org.za' },
+  { name: 'South African Weather Service', url: 'https://www.weathersa.co.za' },
+  { name: 'UCT Poisons Information Centre', url: 'https://health.uct.ac.za/' },
+];

@@ -1,0 +1,231 @@
+.culture-intro {
+  padding-top: 67px;
+  padding-bottom: 22px;
+}
+.culture-intro h1 {
+  font-size: clamp(2.6rem, 5vw, 4.75rem);
+  margin: 12px 0 15px;
+  max-width: 900px;
+}
+.culture-intro p {
+  color: #697a6d;
+  font-size: 1.07rem;
+  max-width: 740px;
+}
+.culture-intro small {
+  color: #a17c60;
+  font-size: 0.72rem;
+}
+.culture-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 6px 0 18px;
+  border-bottom: 1px solid #d9ddcf;
+}
+.culture-links a {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  border: 1px solid #cbd6c9;
+  background: #fefdf8;
+  padding: 9px 12px;
+  border-radius: 5px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #3d6659;
+}
+.culture-section {
+  margin-top: 28px;
+  margin-bottom: 70px;
+}
+.culture-callout {
+  padding: 21px 26px;
+  border-left: 4px solid #6a9b8b;
+  background: #e7eee6;
+  font-size: 0.85rem;
+  color: #385f4f;
+  line-height: 1.75;
+  margin: 18px 0 27px;
+}
+.culture-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+.culture-controls button {
+  padding: 9px 16px;
+  border-radius: 99px;
+  border: 1px solid #c1d2c1;
+  background: transparent;
+  color: #4a695a;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+.culture-controls button.selected {
+  color: #fff;
+  background: #153936;
+}
+.venue-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 40px;
+}
+.venue-profile {
+  background: #fffdf9;
+  border: 1px solid #e2ddcd;
+  border-radius: 7px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+}
+.venue-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+.venue-number {
+  font-family: Georgia, serif;
+  background: #e0e9de;
+  color: #426b56;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+}
+.venue-profile h2 {
+  font-size: 1.85rem;
+  margin: 13px 0;
+}
+.venue-sub {
+  font-size: 0.91rem;
+  color: #576e62;
+}
+.venue-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.venue-columns h3 {
+  font-family: inherit;
+  font-size: 0.83rem;
+  color: #376956;
+  margin: 11px 0 6px;
+}
+.venue-columns p {
+  font-size: 0.78rem;
+  color: #5f7366;
+}
+.venue-warning {
+  background: #fae6d7;
+  padding: 10px;
+  font-size: 0.77rem;
+  color: #87503d;
+  display: flex;
+  gap: 8px;
+}
+.venue-actions {
+  border-top: 1px solid #e8e5da;
+  margin-top: auto;
+  padding-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.venue-actions > span {
+  display: flex;
+  align-items: start;
+  gap: 6px;
+  font-size: 0.74rem;
+  color: #708176;
+  max-width: 55%;
+}
+.venue-actions > div {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.venue-actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.73rem;
+  color: #35725e;
+  font-weight: 800;
+}
+.district-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 17px;
+  margin-bottom: 35px;
+}
+.district-card,
+.robben-primary,
+.robben-detail {
+  padding: 26px;
+  background: #fffdf8;
+  border: 1px solid #e2ddcd;
+  border-radius: 6px;
+}
+.district-card h2 {
+  font-size: 1.55rem;
+  margin-top: 12px;
+}
+.district-card p {
+  font-size: 0.82rem;
+  color: #617569;
+}
+.district-card b {
+  font-size: 0.78rem;
+  color: #416a55;
+}
+.robben-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 25px 0;
+}
+.robben-grid h2,
+.robben-notes h2 {
+  font-size: 1.9rem;
+}
+.robben-grid p,
+.robben-notes p,
+.robben-grid li {
+  font-size: 0.84rem;
+  color: #61746b;
+  line-height: 1.75;
+}
+.robben-grid li {
+  margin-bottom: 14px;
+}
+.robben-notes {
+  margin-bottom: 40px;
+}
+@media (max-width: 750px) {
+  .venue-list,
+  .robben-grid {
+    grid-template-columns: 1fr;
+  }
+  .district-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 520px) {
+  .district-grid,
+  .venue-columns {
+    grid-template-columns: 1fr;
+  }
+  .venue-profile {
+    padding: 20px;
+  }
+  .venue-actions > span {
+    max-width: 100%;
+  }
+}

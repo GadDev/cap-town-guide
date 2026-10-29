@@ -3,11 +3,5 @@
   "printWidth": 100,
   "tabWidth": 2,
   "singleQuote": true,
-  "ignorePatterns": [
-    "node_modules/**",
-    "dist/**",
-    "coverage/**",
-    "test-results/**",
-    "public/**"
-  ]
+  "ignorePatterns": ["node_modules/**", "dist/**", "coverage/**", "test-results/**", "public/**"]
 }

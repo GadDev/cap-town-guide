@@ -13,11 +13,11 @@
     "images:fetch": "tsx scripts/fetch-photos.ts",
     "icons:generate": "tsx scripts/generate-icons.ts",
     "test:e2e": "playwright test",
-    "wildlife:photos": "tsx scripts/fetch-wildlife-photos.ts"
     "lint": "oxlint .",
     "lint:fix": "oxlint --fix .",
     "format": "oxfmt .",
-    "format:check": "oxfmt --check ."
+    "format:check": "oxfmt --check .",
+    "wildlife:photos": "tsx scripts/fetch-wildlife-photos.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
