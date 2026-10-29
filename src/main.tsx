@@ -55,6 +55,7 @@ import { EXTRA_PLACES } from './expanded-guide';
 import { MuseumsGuide, FamilyGuide, RobbenGuide } from './CultureGuide';
 import { HazardPhotos, WildlifeLegend } from './WildlifePhotos';
 import { CurrencyConverter } from './CurrencyConverter';
+import { InteractiveMap } from './InteractiveMap';
 import './styles.css';
 
 function stored<T>(key: string, initial: T): T {
@@ -777,66 +778,14 @@ function PlaceCard({ p }: { p: Place }) {
   );
 }
 function MapPage() {
-  const [selected, setSelected] = useState('All');
-  const types = ['All', 'Nature', 'Culture', 'Food', 'Wine', 'Family', 'Services'];
-  const items = ALL_PLACES.filter((p) => selected === 'All' || p.category === selected);
   return (
     <>
       <PageTitle
-        kicker="ORIENTATION & ROUTES"
-        title="Know where you are."
-        sub="A saved peninsula locator, plus readable addresses for every recommendation. Live directions require an internet connection."
+        kicker="OPEN SOURCE · MAPS"
+        title="Explore the Cape on the map."
+        sub="Interactive OpenStreetMap tiles while connected; local vector coastlines and approximate place markers in airplane mode. A locator, not turn-by-turn navigation."
       />
-      <section className="container section map-layout">
-        <div className="map-graphic">
-          <img
-            src="/maps/peninsula.svg"
-            alt="Simplified map of Cape Peninsula showing Cape Town, Noordhoek, Boulders and Cape Point"
-          />
-          <p>
-            <MapPin size={16} /> Simplified geographic orientation; not a driving or walking
-            navigation map.
-          </p>
-        </div>
-        <div className="map-places">
-          <h2>Places on your route</h2>
-          <div className="filters">
-            {types.map((t) => (
-              <button className={selected === t ? 'on' : ''} key={t} onClick={() => setSelected(t)}>
-                {t}
-              </button>
-            ))}
-          </div>
-          <div className="map-place-scroll">
-            {items.map((p) => (
-              <div className="map-place" key={p.id}>
-                <span>{p.symbol || '📍'}</span>
-                <div>
-                  <strong>{p.name}</strong>
-                  <small>
-                    {p.address} · {p.minutes}
-                  </small>
-                </div>
-                <a
-                  title={'Online directions to ' + p.name}
-                  href={mapLink(p.address)}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <ExternalLink size={17} />
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      <section className="container prose-note">
-        <WifiOff size={20} />
-        <p>
-          Offline mode shows this local reference and saved addresses. Google Maps opens externally
-          when connectivity returns. No offline turn-by-turn routing is provided.
-        </p>
-      </section>
+      <InteractiveMap places={ALL_PLACES} />
     </>
   );
 }
