@@ -6,13 +6,14 @@
   "scripts": {
     "dev": "vite",
     "pdf:generate": "tsx scripts/generate-guides.ts",
-    "build": "npm run icons:generate && npm run images:fetch && npm run pdf:generate && tsc --noEmit && vite build",
+    "build": "npm run icons:generate && npm run images:fetch && npm run wildlife:photos && npm run pdf:generate && tsc --noEmit && vite build",
     "preview": "vite preview",
     "check": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
     "images:fetch": "tsx scripts/fetch-photos.ts",
     "icons:generate": "tsx scripts/generate-icons.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "wildlife:photos": "tsx scripts/fetch-wildlife-photos.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
