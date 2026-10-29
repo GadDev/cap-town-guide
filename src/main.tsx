@@ -53,6 +53,8 @@ import {
 } from './data';
 import { EXTRA_PLACES } from './expanded-guide';
 import { MuseumsGuide, FamilyGuide, RobbenGuide } from './CultureGuide';
+import { CulturePage, VenuePage, FamilyIdeasPage, RobbenIslandPage } from './CulturePages';
+import { EXTRA_PLACES as MUSEUM_PLACES } from './museum-data';
 import { HazardPhotos, WildlifeLegend } from './WildlifePhotos';
 import { CurrencyConverter } from './CurrencyConverter';
 import { ORIGINAL_GUIDES } from './guides';
@@ -176,7 +178,9 @@ function useTripState(): State {
     swReady,
   };
 }
-const ALL_PLACES: Place[] = [...PLACES, ...EXTRA_PLACES];
+const ALL_PLACES: Place[] = [...PLACES, ...EXTRA_PLACES, ...MUSEUM_PLACES].filter(
+  (place, index, places) => places.findIndex((candidate) => candidate.id === place.id) === index,
+);
 const primaryNav = [
   { to: '/', label: 'Home', icon: Home },
   { to: '/itinerary', label: '12 Days', icon: CalendarDays },
@@ -481,6 +485,24 @@ function HomePage() {
           </Link>
         </div>
       </section>
+      <section className="container section culture-home-spot">
+        <div>
+          <Eyebrow>BEYOND THE POSTCARD</Eyebrow>
+          <h2 className="display-heading">The people, places and stories of the Cape.</h2>
+          <p className="lead">
+            Six museums, six cultural districts, and a careful plan for Robben Island. Plus nine
+            flexible family alternatives when children or weather change the day.
+          </p>
+          <div className="culture-home-actions">
+            <Link to="/culture" className="btn primary">
+              Museums & history <ArrowRight size={16} />
+            </Link>
+            <Link to="/family-ideas" className="btn outline">
+              Family alternatives <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
       <section className="container section quote">
         <Eyebrow>A NOTE FROM THE GUIDE</Eyebrow>
         <blockquote>
@@ -590,6 +612,17 @@ function DayPage() {
             {day.alert}
           </div>
         )}
+        {(day.id === 8 || day.id === 11) && (
+          <div className="culture-day-links">
+            <Link to="/culture">
+              <BookOpen size={17} /> Museums, city history and Robben Island{' '}
+              <ArrowRight size={16} />
+            </Link>
+            <Link to="/family-ideas">
+              <Heart size={17} /> Family-friendly alternatives <ArrowRight size={16} />
+            </Link>
+          </div>
+        )}
         <div className="detail-layout">
           <article>
             <Eyebrow>YOUR DAY AT A GLANCE</Eyebrow>
@@ -673,6 +706,24 @@ function ExplorePage() {
         sub="A curated guide rather than an endless to-do list. All addresses and descriptions are saved for offline reading."
       />
       <section className="container section small-gap">
+        <div className="explore-guide-nav">
+          <Link to="/culture">
+            <BookOpen size={23} />
+            <span>
+              <b>Museums & history</b>
+              <small>Six museums · city neighbourhoods · Robben Island</small>
+            </span>
+            <ArrowRight size={16} />
+          </Link>
+          <Link to="/family-ideas">
+            <Heart size={23} />
+            <span>
+              <b>More family ideas</b>
+              <small>Nine playful alternatives for little explorers</small>
+            </span>
+            <ArrowRight size={16} />
+          </Link>
+        </div>
         <div className="searchbar">
           <Search size={19} />
           <input
@@ -1146,7 +1197,11 @@ function App() {
             <Route path="/itinerary" element={<ItineraryPage />} />
             <Route path="/day/:id" element={<DayPage />} />
             <Route path="/explore" element={<ExplorePage />} />
-            <Route path="/culture" element={<MuseumsGuide />} />
+            <Route path="/culture" element={<CulturePage />} />
+            <Route path="/culture/guide" element={<MuseumsGuide />} />
+            <Route path="/culture/venue/:id" element={<VenuePage />} />
+            <Route path="/culture/robben-island" element={<RobbenIslandPage />} />
+            <Route path="/family-ideas" element={<FamilyIdeasPage />} />
             <Route path="/family" element={<FamilyGuide />} />
             <Route path="/robben-island" element={<RobbenGuide />} />
             <Route path="/map" element={<MapPage />} />
