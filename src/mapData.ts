@@ -10,7 +10,7 @@ aquarium:[-33.9063,18.4189],robben:[-33.9036,18.4188],caferoux:[-34.0977,18.3640
 foodbarn:[-34.0977,18.3642],thorfynns:[-34.0974,18.3599],berthas:[-34.1930,18.4380],
 dunes:[-34.0474,18.3482],jonkershuis:[-34.0276,18.4204],olympia:[-34.1279,18.4504],
 harbourhouse:[-34.1293,18.4518],market:[-33.9051,18.4189],hospital1:[-34.1363,18.4310],
-hospital2:[-34.0669,18.4555],hospital3:[-34.0378,18.4756]
+hospital2:[-34.0669,18.4555],hospital3:[-34.0378,18.4756],
   // Approximate neighbourhood reference points for the expanded culture and family guide.
   'slave-lodge': [-33.9244, 18.4209],
   'south-african-museum': [-33.929, 18.416],
