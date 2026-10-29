@@ -1,27 +1,266 @@
-import {useEffect,useMemo,useState} from 'react';
-import {MapContainer,CircleMarker,TileLayer,Polygon,Polyline,Popup,Tooltip,useMap} from 'react-leaflet';
-import {ExternalLink,Navigation,WifiOff,Wifi,Search,Layers} from 'lucide-react';
-import type {Place} from './data';
-import {PENINSULA_LAND,CATEGORY_COLOR,pinForPlace} from './mapData';
+import { useEffect, useMemo, useState } from 'react';
+import {
+  MapContainer,
+  CircleMarker,
+  TileLayer,
+  Polygon,
+  Polyline,
+  Popup,
+  Tooltip,
+  useMap,
+} from 'react-leaflet';
+import { ExternalLink, Navigation, WifiOff, Wifi, Search, Layers } from 'lucide-react';
+import type { Place } from './data';
+import { PENINSULA_LAND, CATEGORY_COLOR, pinForPlace } from './mapData';
 import 'leaflet/dist/leaflet.css';
 import './map.css';
-const directions=(address:string)=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(address);
-function FocusMap({center}:{center:[number,number]|null}){const map=useMap();useEffect(()=>{if(center)map.flyTo(center,13,{animate:true,duration:.4})},[map,center]);return null}
-export function InteractiveMap({places}:{places:Place[]}){
- const [online,setOnline]=useState(navigator.onLine),[category,setCategory]=useState('All'),[query,setQuery]=useState(''),[day,setDay]=useState('All'),[focus,setFocus]=useState<[number,number]|null>(null),[position,setPosition]=useState<[number,number]|null>(null),[locating,setLocating]=useState(false);
- useEffect(()=>{const callback=()=>setOnline(navigator.onLine);window.addEventListener('online',callback);window.addEventListener('offline',callback);return()=>{window.removeEventListener('online',callback);window.removeEventListener('offline',callback)}},[]);
- const filtered=useMemo(()=>places.filter(p=>pinForPlace(p)&&(category==='All'||p.category===category)&&(day==='All'||p.day===Number(day))&&(p.name+' '+p.area).toLowerCase().includes(query.toLowerCase())),[places,category,day,query]);
- const locate=()=>{if(!('geolocation' in navigator))return;setLocating(true);navigator.geolocation.getCurrentPosition(p=>{const pos:[number,number]=[p.coords.latitude,p.coords.longitude];setPosition(pos);setFocus(pos);setLocating(false)},()=>{setLocating(false)}, {enableHighAccuracy:false,timeout:10000,maximumAge:60_000})};
- return <section className="container map-workbench"><div className="map-bar"><div><b>{online?'OpenStreetMap — interactive':'Offline vector reference'}</b><span>{online?<Wifi size={15}/>:<WifiOff size={15}/>} {online?'Live map tiles; pins stay local':'No external tiles requested; pan, zoom and explore local pins'}</span></div><button className="map-locate" onClick={locate} type="button" disabled={locating}><Navigation size={16}/>{locating?'Locating…':'My location'}</button></div><div className="interactive-map-layout">
- <div className="interactive-map-frame" role="region" aria-label="Interactive Cape Town map">
- <MapContainer center={[-34.09,18.46]} zoom={10} minZoom={8} maxZoom={16} scrollWheelZoom={false} className="leaflet-map" zoomControl={true} attributionControl={true} style={{background:'#d9e9e8'}}>
- <FocusMap center={focus}/>
- {online?<TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>' url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" maxZoom={19}/>:<><Polygon positions={PENINSULA_LAND} pathOptions={{color:'#80a897',weight:2,fillColor:'#eee9db',fillOpacity:1}}/><Polyline positions={[[-33.921,18.42],[-33.988,18.433],[-34.055,18.44],[-34.105,18.4],[-34.145,18.42],[-34.198,18.452],[-34.357,18.497]]} pathOptions={{color:'#c8a184',weight:2,dashArray:'6 7'}}/></>}
- {filtered.map(p=>{const coordinates=pinForPlace(p);if(!coordinates)return null;return <CircleMarker key={p.id} center={coordinates} radius={p.id==='monkey'?10:8} pathOptions={{color:'#fff',weight:2,fillOpacity:.91,fillColor:CATEGORY_COLOR[p.category]}} eventHandlers={{click:()=>setFocus(coordinates)}}><Tooltip direction="top">{p.name}</Tooltip><Popup><strong>{p.name}</strong><div>{p.area} · {p.category}</div><div>{p.address}</div><a href={directions(p.address)} target="_blank" rel="noreferrer">Open online directions</a></Popup></CircleMarker>})}
- {position&&<CircleMarker center={position} radius={9} pathOptions={{color:'#fff',weight:2,fillColor:'#1972d2',fillOpacity:1}}><Popup>Your device-reported location (approximate)</Popup></CircleMarker>}
- </MapContainer>
- {!online&&<span className="map-offline-overlay"><WifiOff size={16}/> Simplified reference coastline — not suitable for navigation</span>}
- </div>
- <aside className="map-directory"><h2>Places around the Cape</h2><div className="map-search"><Search size={17}/><input aria-label="Search map places" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search places or areas"/></div><div className="map-filter-pair"><label>Category<select aria-label="Map category" value={category} onChange={e=>setCategory(e.target.value)}>{['All','Nature','Culture','Family','Food','Wine','Services'].map(t=><option key={t} value={t}>{t}</option>)}</select></label><label>Itinerary day<select aria-label="Itinerary day" value={day} onChange={e=>setDay(e.target.value)}><option value="All">All days</option>{Array.from({length:12},(_,i)=><option value={i+1} key={i}>Day {i+1}</option>)}</select></label></div><div className="map-directory-list">{filtered.map(p=><article className="map-row" key={p.id}><button type="button" onClick={()=>setFocus(pinForPlace(p))} aria-label={'Locate '+p.name+' on map'}><span style={{background:CATEGORY_COLOR[p.category]}} className="map-dot"/><span><strong>{p.name}</strong><small>{p.area} · {p.minutes}</small></span></button><a aria-label={'Open navigation to '+p.name} title="Directions require internet" href={directions(p.address)} target="_blank" rel="noreferrer"><ExternalLink size={17}/></a></article>)}{!filtered.length&&<p className="map-none">No matching places. Try another category or itinerary day.</p>}</div></aside>
- </div><div className="map-disclaimer"><Layers size={17}/><p>Map uses the free, open-source <b>Leaflet</b> library. Live tiles © OpenStreetMap contributors, subject to the OpenStreetMap Foundation's tile-use policy. They are not bulk downloaded or deliberately cached. Offline, a simplified local vector coastline and approximate pins remain interactive. Coordinates are for orientation, not turn-by-turn routing, distance calculations or emergency locations. For driving, open a proper navigation app when connected or separately download its authorized offline map.</p></div></section>
+const directions = (address: string) =>
+  'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(address);
+function FocusMap({ center }: { center: [number, number] | null }) {
+  const map = useMap();
+  useEffect(() => {
+    if (center) map.flyTo(center, 13, { animate: true, duration: 0.4 });
+  }, [map, center]);
+  return null;
+}
+export function InteractiveMap({ places }: { places: Place[] }) {
+  const [online, setOnline] = useState(navigator.onLine),
+    [category, setCategory] = useState('All'),
+    [query, setQuery] = useState(''),
+    [day, setDay] = useState('All'),
+    [focus, setFocus] = useState<[number, number] | null>(null),
+    [position, setPosition] = useState<[number, number] | null>(null),
+    [locating, setLocating] = useState(false);
+  useEffect(() => {
+    const callback = () => setOnline(navigator.onLine);
+    window.addEventListener('online', callback);
+    window.addEventListener('offline', callback);
+    return () => {
+      window.removeEventListener('online', callback);
+      window.removeEventListener('offline', callback);
+    };
+  }, []);
+  const filtered = useMemo(
+    () =>
+      places.filter(
+        (p) =>
+          pinForPlace(p) &&
+          (category === 'All' || p.category === category) &&
+          (day === 'All' || p.day === Number(day)) &&
+          (p.name + ' ' + p.area).toLowerCase().includes(query.toLowerCase()),
+      ),
+    [places, category, day, query],
+  );
+  const locate = () => {
+    if (!('geolocation' in navigator)) return;
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (p) => {
+        const pos: [number, number] = [p.coords.latitude, p.coords.longitude];
+        setPosition(pos);
+        setFocus(pos);
+        setLocating(false);
+      },
+      () => {
+        setLocating(false);
+      },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 60_000 },
+    );
+  };
+  return (
+    <section className="container map-workbench">
+      <div className="map-bar">
+        <div>
+          <b>{online ? 'OpenStreetMap — interactive' : 'Offline vector reference'}</b>
+          <span>
+            {online ? <Wifi size={15} /> : <WifiOff size={15} />}{' '}
+            {online
+              ? 'Live map tiles; pins stay local'
+              : 'No external tiles requested; pan, zoom and explore local pins'}
+          </span>
+        </div>
+        <button className="map-locate" onClick={locate} type="button" disabled={locating}>
+          <Navigation size={16} />
+          {locating ? 'Locating…' : 'My location'}
+        </button>
+      </div>
+      <div className="interactive-map-layout">
+        <div className="interactive-map-frame" role="region" aria-label="Interactive Cape Town map">
+          <MapContainer
+            center={[-34.09, 18.46]}
+            zoom={10}
+            minZoom={8}
+            maxZoom={16}
+            scrollWheelZoom={false}
+            className="leaflet-map"
+            zoomControl={true}
+            attributionControl={true}
+            style={{ background: '#d9e9e8' }}
+          >
+            <FocusMap center={focus} />
+            {online ? (
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+                url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+                maxZoom={19}
+              />
+            ) : (
+              <>
+                <Polygon
+                  positions={PENINSULA_LAND}
+                  pathOptions={{
+                    color: '#80a897',
+                    weight: 2,
+                    fillColor: '#eee9db',
+                    fillOpacity: 1,
+                  }}
+                />
+                <Polyline
+                  positions={[
+                    [-33.921, 18.42],
+                    [-33.988, 18.433],
+                    [-34.055, 18.44],
+                    [-34.105, 18.4],
+                    [-34.145, 18.42],
+                    [-34.198, 18.452],
+                    [-34.357, 18.497],
+                  ]}
+                  pathOptions={{ color: '#c8a184', weight: 2, dashArray: '6 7' }}
+                />
+              </>
+            )}
+            {filtered.map((p) => {
+              const coordinates = pinForPlace(p);
+              if (!coordinates) return null;
+              return (
+                <CircleMarker
+                  key={p.id}
+                  center={coordinates}
+                  radius={p.id === 'monkey' ? 10 : 8}
+                  pathOptions={{
+                    color: '#fff',
+                    weight: 2,
+                    fillOpacity: 0.91,
+                    fillColor: CATEGORY_COLOR[p.category],
+                  }}
+                  eventHandlers={{ click: () => setFocus(coordinates) }}
+                >
+                  <Tooltip direction="top">{p.name}</Tooltip>
+                  <Popup>
+                    <strong>{p.name}</strong>
+                    <div>
+                      {p.area} · {p.category}
+                    </div>
+                    <div>{p.address}</div>
+                    <a href={directions(p.address)} target="_blank" rel="noreferrer">
+                      Open online directions
+                    </a>
+                  </Popup>
+                </CircleMarker>
+              );
+            })}
+            {position && (
+              <CircleMarker
+                center={position}
+                radius={9}
+                pathOptions={{ color: '#fff', weight: 2, fillColor: '#1972d2', fillOpacity: 1 }}
+              >
+                <Popup>Your device-reported location (approximate)</Popup>
+              </CircleMarker>
+            )}
+          </MapContainer>
+          {!online && (
+            <span className="map-offline-overlay">
+              <WifiOff size={16} /> Simplified reference coastline — not suitable for navigation
+            </span>
+          )}
+        </div>
+        <aside className="map-directory">
+          <h2>Places around the Cape</h2>
+          <div className="map-search">
+            <Search size={17} />
+            <input
+              aria-label="Search map places"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search places or areas"
+            />
+          </div>
+          <div className="map-filter-pair">
+            <label>
+              Category
+              <select
+                aria-label="Map category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                {['All', 'Nature', 'Culture', 'Family', 'Food', 'Wine', 'Services'].map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Itinerary day
+              <select
+                aria-label="Itinerary day"
+                value={day}
+                onChange={(e) => setDay(e.target.value)}
+              >
+                <option value="All">All days</option>
+                {Array.from({ length: 12 }, (_, i) => (
+                  <option value={i + 1} key={i}>
+                    Day {i + 1}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div className="map-directory-list">
+            {filtered.map((p) => (
+              <article className="map-row" key={p.id}>
+                <button
+                  type="button"
+                  onClick={() => setFocus(pinForPlace(p))}
+                  aria-label={'Locate ' + p.name + ' on map'}
+                >
+                  <span style={{ background: CATEGORY_COLOR[p.category] }} className="map-dot" />
+                  <span>
+                    <strong>{p.name}</strong>
+                    <small>
+                      {p.area} · {p.minutes}
+                    </small>
+                  </span>
+                </button>
+                <a
+                  aria-label={'Open navigation to ' + p.name}
+                  title="Directions require internet"
+                  href={directions(p.address)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <ExternalLink size={17} />
+                </a>
+              </article>
+            ))}
+            {!filtered.length && (
+              <p className="map-none">No matching places. Try another category or itinerary day.</p>
+            )}
+          </div>
+        </aside>
+      </div>
+      <div className="map-disclaimer">
+        <Layers size={17} />
+        <p>
+          Map uses the free, open-source <b>Leaflet</b> library. Live tiles © OpenStreetMap
+          contributors, subject to the OpenStreetMap Foundation's tile-use policy. They are not bulk
+          downloaded or deliberately cached. Offline, a simplified local vector coastline and
+          approximate pins remain interactive. Coordinates are for orientation, not turn-by-turn
+          routing, distance calculations or emergency locations. For driving, open a proper
+          navigation app when connected or separately download its authorized offline map.
+        </p>
+      </div>
+    </section>
+  );
 }

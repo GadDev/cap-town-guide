@@ -48,7 +48,9 @@ test('twelve-day itinerary, locally saved notes and offline emergency reload', a
   await expect(page.getByLabel('Notes for this day')).toHaveValue('Bring extra sunhats');
   await page.goto('/map');
   await expect(page.getByRole('region', { name: 'Interactive Cape Town map' })).toBeVisible();
-  await expect(page.getByRole('button', { name: /Locate Monkey Valley Resort on map/i })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: /Locate Monkey Valley Resort on map/i }),
+  ).toBeVisible();
   await expect(page.getByText(/Offline vector reference/i)).toBeVisible();
 });
 test('trip dates can be edited without rebuilding', async ({ page }) => {
